@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="currentScene" fx:controller="controller.LoginScreenController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <SplitPane dividerPositions="0.5" layoutY="51.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -40,9 +40,9 @@
                         <Label prefHeight="17.0" prefWidth="60.0" text="welcome!" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <Label text="username:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label text="password:" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextField maxHeight="27.0" maxWidth="-Infinity" prefHeight="27.0" prefWidth="135.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <PasswordField maxHeight="27.0" maxWidth="-Infinity" prefHeight="27.0" prefWidth="135.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <Button maxWidth="-Infinity" mnemonicParsing="false" prefWidth="135.0" text="login" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                        <TextField fx:id="username" maxHeight="27.0" maxWidth="-Infinity" prefHeight="27.0" prefWidth="135.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <PasswordField fx:id="password" maxHeight="27.0" maxWidth="-Infinity" prefHeight="27.0" prefWidth="135.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Button fx:id="login" maxWidth="-Infinity" mnemonicParsing="false" prefWidth="135.0" text="login" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                         <Button maxHeight="27.0" maxWidth="100.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="register" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                         <Button maxWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="spectate" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                      </children>
@@ -53,7 +53,7 @@
                <children>
                   <ImageView fitHeight="600.0" fitWidth="1000.0" layoutX="-300.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0">
                      <image>
-                        <Image url="@mapa.png" />
+                        <Image url="@../content/map.png" />
                      </image>
                   </ImageView>
                </children>

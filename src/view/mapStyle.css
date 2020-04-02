@@ -1,0 +1,4 @@
+.button {
+    -fx-background-image: url('../content/airport.png');
+    -fx-background-color: transparent;
+}
