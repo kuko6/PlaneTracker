@@ -31,7 +31,7 @@ public class LoginScreenController implements Controller {
     }
 
     private void authenticate() {
-        if (Objects.equals(username.getText(), "user") &&(Objects.equals(password.getText(), "1234"))) {
+        if (Objects.equals(username.getText(), "user") && (Objects.equals(password.getText(), "1234"))) {
                 this.switchScene(currentScene, "Map");
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
