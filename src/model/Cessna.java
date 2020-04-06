@@ -4,8 +4,10 @@ public class Cessna extends Plane {
 
     private String company = "Cessna";
 
-    public Cessna(String type, String airline, String id, Airport start, Airport destinantion) {
-        super(type, airline, id, start, destinantion);
+    private int maxRange;
+
+    public Cessna(String type, String airline, String id) {
+        super(type, airline, id);
     }
 
     public Cessna(String type, String airline) {

@@ -25,14 +25,6 @@ public class Airport implements Serializable {
         return location;
     }
 
-    public ArrayList<Plane> getArrivals() {
-        return arrivals;
-    }
-
-    public ArrayList<Plane> getDepartures() {
-        return departures;
-    }
-
     public void addArrival(Plane plane) {
         this.arrivals.add(plane);
     }
@@ -45,6 +37,10 @@ public class Airport implements Serializable {
         arrivals.remove(landed);
     }
 
+    public ArrayList<Plane> getArrivals() {
+        return arrivals;
+    }
+
     public void addDeparture(Plane departure) {
         this.departures.add(departure);
     }
@@ -55,5 +51,19 @@ public class Airport implements Serializable {
 
     public void removeDeparture(Plane plane) {
         arrivals.remove(plane);
+    }
+
+    public ArrayList<Plane> getDepartures() {
+        return departures;
+    }
+
+    public void allowTakeoff(Plane plane) {
+        plane.takeoff();
+        this.addDeparture(plane);
+    }
+
+    public void allowLanding(Plane plane) {
+        plane.land();
+        this.addArrival(plane);
     }
 }

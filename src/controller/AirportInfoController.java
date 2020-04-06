@@ -12,7 +12,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-public class AirportController implements Controller {
+public class AirportInfoController implements Controller {
 
     @FXML
     private AnchorPane currentScene;
@@ -27,10 +27,9 @@ public class AirportController implements Controller {
     private TableColumn<Airport, String> departures;
 
     private ObservableList<Airport> timeBoard = FXCollections.observableArrayList();
-
     private Airport airport;
 
-    public AirportController() {
+    public AirportInfoController() {
         loadCurrentAirport();
         timeBoard.add(this.airport);
     }

@@ -24,18 +24,16 @@ public abstract class Plane implements Serializable {
     private String startTime;
     private String arrivalTime;
 
-    /* DateTimeFormatter timeFormatter2 = DateTimeFormatter.ofPattern("kk:mm");
-        System.out.println(LocalTime.now().format(timeFormatter2)); */
+    private FlightPath flightPath;
 
-    public Plane(String type, String airline, String id, Airport start, Airport destinantion) {
+    public Plane(String type, String airline, String id) {
         this.type = type;
         this.airline = airline;
         this.id = id;
-        this.start = start;
-        this.destinantion = destinantion;
 
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("kk:mm");
         this.startTime = LocalTime.now().format(timeFormat);
+        this.arrivalTime = LocalTime.now().plusHours(1).format(timeFormat);
     }
 
     public Plane(String type, String airline) {
@@ -60,11 +58,12 @@ public abstract class Plane implements Serializable {
         return airline;
     }
 
-    // tu este treba doplnit aj destinaciu
+    // tu este treba doplnit aj start
     public StringProperty getArrivalInfo() {
         return new SimpleStringProperty(airline + ", " + arrivalTime);
     }
 
+    // tu este treba doplnit aj destinaciu
     public StringProperty getDepartureInfo() {
         return new SimpleStringProperty(airline + ", " + startTime);
     }
@@ -95,6 +94,7 @@ public abstract class Plane implements Serializable {
 
     public void setStart(Airport start) {
         this.start = start;
+        start.addDeparture(this);
     }
 
     public Airport getDestinantion() {
@@ -103,6 +103,7 @@ public abstract class Plane implements Serializable {
 
     public void setDestinantion(Airport destinantion) {
         this.destinantion = destinantion;
+        destinantion.addArrival(this);
     }
 
     public String getStartTime() {
@@ -111,6 +112,16 @@ public abstract class Plane implements Serializable {
 
     public String getArrivalTime() {
         return arrivalTime;
+    }
+
+    public void takeoff() {
+        this.flightPath = new FlightPath(start.getLocation(), destinantion.getLocation());
+    }
+
+    public void land() {
+        this.flightPath = null;
+        start.removeArrival(this);
+        start.removeDeparture(this);
     }
 
 }
