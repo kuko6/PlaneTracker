@@ -14,6 +14,7 @@ public abstract class Plane implements Serializable {
     private String type;
     private String airline;
     private String id;
+    private final String company = null;
 
     private double speed;
     private double altitude;
@@ -35,15 +36,6 @@ public abstract class Plane implements Serializable {
         this.startTime = LocalTime.now().format(timeFormat);
         this.arrivalTime = LocalTime.now().plusHours(1).format(timeFormat);
     }
-
-    public Plane(String type, String airline) {
-        this.type = type;
-        this.airline = airline;
-
-        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("kk:mm");
-        this.startTime = LocalTime.now().format(timeFormat);
-        this.arrivalTime = LocalTime.now().plusHours(1).format(timeFormat);
-    }
     //private FlyPath flyPath;
 
     public String getType() {
@@ -54,23 +46,27 @@ public abstract class Plane implements Serializable {
         return new SimpleStringProperty(type);
     }
 
+    public String getCompany() {
+        return company;
+    }
+
     public String getAirline() {
         return airline;
     }
 
-    // tu este treba doplnit aj start
     public StringProperty getArrivalInfo() {
-        return new SimpleStringProperty(airline + ", " + arrivalTime);
+        return new SimpleStringProperty(id + " | " + airline + " | " + arrivalTime + " | " + start.getName());
     }
 
-    // tu este treba doplnit aj destinaciu
     public StringProperty getDepartureInfo() {
-        return new SimpleStringProperty(airline + ", " + startTime);
+        return new SimpleStringProperty(id + " | " + airline + " | " + startTime + " | " + destinantion.getName());
     }
 
     public String getId() {
         return id;
     }
+
+    public StringProperty getIdProperty() { return new SimpleStringProperty(id); }
 
     public double getSpeed() {
         return speed;
@@ -112,6 +108,10 @@ public abstract class Plane implements Serializable {
 
     public String getArrivalTime() {
         return arrivalTime;
+    }
+
+    public FlightPath getFlightPath() {
+        return flightPath;
     }
 
     public void takeoff() {

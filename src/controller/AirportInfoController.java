@@ -30,16 +30,16 @@ public class AirportInfoController implements Controller {
     private Airport airport;
 
     public AirportInfoController() {
-        loadCurrentAirport();
+        loadSelectedAirport();
         timeBoard.add(this.airport);
     }
 
-    private void loadCurrentAirport() {
+    private void loadSelectedAirport() {
         try {
-            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("data/currentAirport.txt"));
-            this.airport = (Airport) objectInputStream.readObject();
+            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("data/selectedAirport.txt"));
+            airport = (Airport) objectInputStream.readObject();
             objectInputStream.close();
-            System.out.println(this.airport.getName());
+            System.out.println(airport.getName());
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -47,7 +47,7 @@ public class AirportInfoController implements Controller {
     }
 
     private void showTimetable() {
-        int i = 0, n = this.airport.getArrivals().size();
+        int i = 0, n = airport.getArrivals().size();
         while (n != 0 && i < n) {
             int finalI = i;
             arrivals.setCellValueFactory(cellData -> cellData.getValue().getArrival(finalI).getArrivalInfo());
@@ -55,7 +55,7 @@ public class AirportInfoController implements Controller {
         }
 
         i = 0;
-        n = this.airport.getDepartures().size();
+        n = airport.getDepartures().size();
         while (n != 0 && i < n) {
             int finalI = i;
             departures.setCellValueFactory(cellData -> cellData.getValue().getDeparture(finalI).getDepartureInfo());

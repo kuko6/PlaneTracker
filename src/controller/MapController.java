@@ -5,10 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Line;
-import model.Airbus;
-import model.Airport;
-import model.Plane;
+import model.*;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,12 +20,15 @@ public class MapController implements Controller {
     @FXML
     private Button logout;
 
+    @FXML
+    private Button planeList;
+
     private ArrayList<Airport> airports = new ArrayList<>();
     private ArrayList<Plane> planes = new ArrayList<>();
 
-    private void saveClickedAirport(Airport airport) {
+    private void saveSelectedAirport(Airport airport) {
         try {
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("data/currentAirport.txt"));
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("data/selectedAirport.txt"));
             objectOutputStream.writeObject(airport);
             objectOutputStream.flush();
             objectOutputStream.close();
@@ -50,7 +50,7 @@ public class MapController implements Controller {
 
                 airport.setOnAction(e -> {
                     try {
-                        saveClickedAirport(currentAirport);
+                        saveSelectedAirport(currentAirport);
                         AnchorPane newScene = FXMLLoader.load(getClass().getResource("../view/AirportInfo.fxml"));
                         currentScene.getChildren().add(newScene);
 
@@ -62,18 +62,44 @@ public class MapController implements Controller {
         }
     }
 
+    private void savePlanes() {
+        try {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("data/currentPlanes.txt"));
+            objectOutputStream.writeObject(planes);
+            objectOutputStream.flush();
+            objectOutputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void loadPlanes() {
-        Plane plane1 = new Airbus("A321", "Flyyyy");
-        Plane plane2 = new Airbus("A321", "EasyFly");
+        Plane plane1 = new Airbus("A321", "Flyyyy", "1234");
+        Plane plane2 = new Airbus("A321", "EasyFly", "2222");
+        Plane plane3 = new Cessna("150", "Pff", "3242");
+        Plane plane4 = new Boeing("787", "EasyFly", "1323");
 
         planes.add(plane1);
         planes.add(plane2);
+        planes.add(plane3);
+        planes.add(plane4);
 
         plane1.setStart(airports.get(0));
         plane1.setDestinantion(airports.get(2));
 
         plane2.setStart(airports.get(3));
         plane2.setDestinantion(airports.get(0));
+
+        plane3.setStart(airports.get(0));
+        plane3.setDestinantion(airports.get(1));
+
+        plane4.setStart(airports.get(3));
+        plane4.setDestinantion(airports.get(6));
+
+        for (Plane p : planes) {
+            p.takeoff();
+        }
 
         /*
         double[] startLocation = plane1.getStart().getLocation();
@@ -91,5 +117,15 @@ public class MapController implements Controller {
         loadPlanes();
 
         logout.setOnAction(e -> this.switchScene(currentScene ,"LoginScreen"));
+        planeList.setOnAction(e -> {
+            try {
+                savePlanes();
+                AnchorPane newScene = FXMLLoader.load(getClass().getResource("../view/PlaneList.fxml"));
+                currentScene.getChildren().add(newScene);
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 }

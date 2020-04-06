@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="currentScene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PlaneListController">
+   <children>
+      <TableView fx:id="planeTable" fixedCellSize="0.0" layoutX="7.0" opacity="0.9" prefHeight="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columns>
+          <TableColumn fx:id="id" prefWidth="70.0" text="id" />
+            <TableColumn fx:id="start" prefWidth="100.0" text="Start" />
+          <TableColumn fx:id="destination" prefWidth="100.0" text="Destination" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

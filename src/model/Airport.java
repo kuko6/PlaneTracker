@@ -1,5 +1,8 @@
 package model;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -19,6 +22,10 @@ public class Airport implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public StringProperty getNameProperty() {
+        return new SimpleStringProperty(name);
     }
 
     public double[] getLocation() {

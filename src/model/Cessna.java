@@ -2,7 +2,7 @@ package model;
 
 public class Cessna extends Plane {
 
-    private String company = "Cessna";
+    private final String company = "Cessna";
 
     private int maxRange;
 
@@ -10,11 +10,8 @@ public class Cessna extends Plane {
         super(type, airline, id);
     }
 
-    public Cessna(String type, String airline) {
-        super(type, airline);
+    public final String getCompany() {
+        return this.company;
     }
 
-    public String getCompany() {
-        return company;
-    }
 }

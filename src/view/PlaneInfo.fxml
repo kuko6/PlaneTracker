@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane fx:id="currentScene" fx:controller="controller.PlaneInfoController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" >
+   <children>
+      <GridPane fx:id="infoTable" opacity="0.9" prefHeight="300.0" prefWidth="200.0" style="-fx-background-color: #ebf0f2#ebf0f2;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" percentWidth="0.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" percentWidth="0.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="30.0" minHeight="10.0" percentHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="30.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="30.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="30.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label fx:id="company" text="company" />
+            <Label fx:id="id" text="id" GridPane.rowIndex="1" />
+            <Label text="start:" GridPane.rowIndex="2" />
+            <Label fx:id="type" text="type" GridPane.columnIndex="1" />
+            <Label fx:id="airline" text="airline" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="start" text="airport" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="start time:" GridPane.rowIndex="3" />
+            <Label fx:id="startTime" text="time" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="destination:" GridPane.rowIndex="4" />
+            <Label fx:id="destination" text="airport" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label text="time of arrival:" GridPane.rowIndex="5" />
+            <Label fx:id="arrivalTime" text="time" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="completed:" GridPane.rowIndex="6" />
+            <Label fx:id="completed" text="percent" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label text="altitude:" GridPane.rowIndex="8" />
+            <Label text="speed:" GridPane.rowIndex="9" />
+            <Label fx:id="altitude" text="altitude" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Label fx:id="speed" text="speed" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+         </children>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+      </GridPane>
+   </children>
+</AnchorPane>

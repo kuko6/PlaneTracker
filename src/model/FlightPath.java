@@ -1,8 +1,8 @@
 package model;
 
-import javafx.geometry.Point2D;
+import java.io.Serializable;
 
-public class FlightPath {
+public class FlightPath implements Serializable {
     /*
     private double startX;
     private double startY;
@@ -13,7 +13,6 @@ public class FlightPath {
     double[] start;
     double[] destination;
 
-    private Point2D location;
     private double lenght;
     private double travelled;
     private double completed;
@@ -28,8 +27,7 @@ public class FlightPath {
         this.start = start;
         this.destination = destination;
 
-        this.location = new Point2D(start[0], start[1]);
-        this.lenght = location.distance(destination[0], destination[1]);
+        this.lenght = Math.hypot(destination[0] - start[0], destination[1] - start[1]);
         this.travelled = 0;
         this.completed = 0;
     }
@@ -39,7 +37,7 @@ public class FlightPath {
     }
 
     public double getCompleted() {
-        completed = travelled /lenght;
+        completed = travelled/lenght;
         completed *= 100;
         return completed;
     }
