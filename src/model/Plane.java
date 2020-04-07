@@ -72,17 +72,23 @@ public abstract class Plane implements Serializable {
         return speed;
     }
 
-    public void setSpeed(double speed) {
-        this.speed = speed;
+    public void increaseSpeed(double speed) {
+        this.speed += speed;
+    }
+
+    public void decreaseSpeed(double speed) {
+        this.speed -= speed;
     }
 
     public double getAltitude() {
         return altitude;
     }
 
-    public void setAltitude(double altitude) {
-        this.altitude = altitude;
+    public void ascend(double altitude) {
+        this.altitude += altitude;
     }
+
+    public void descend(double altitude) { this.altitude -= altitude; }
 
     public Airport getStart() {
         return start;

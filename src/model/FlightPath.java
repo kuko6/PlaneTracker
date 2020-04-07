@@ -36,13 +36,17 @@ public class FlightPath implements Serializable {
         return lenght;
     }
 
+    public double getTravelled() { return travelled; }
+
     public double getCompleted() {
         completed = travelled/lenght;
         completed *= 100;
-        return completed;
+        System.out.println(completed);
+        return Math.ceil(completed);
     }
 
     public void updatePosition(int speed) {
         travelled += speed;
+        System.out.println(travelled);
     }
 }
