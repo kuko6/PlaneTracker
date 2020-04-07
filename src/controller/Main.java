@@ -37,7 +37,7 @@ public class Main extends Application {
         double[] s = {0, 12};
         double[] d = {20, 50};
         FlightPath f = new FlightPath(s, d);
-        
+
         /*
         new Timer().scheduleAtFixedRate(new TimerTask() {
             public void run() {

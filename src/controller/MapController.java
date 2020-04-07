@@ -54,7 +54,6 @@ public class MapController implements Controller {
         for (Node n : currentScene.getChildren()) {
             if (n instanceof Button && n.getId().contains("airport")) {
                 Button airport = (Button) n;
-                int finalI = i;
 
                 if (Main.counter == 0) {
                     double[] position = {(airport.getLayoutX() + airport.getPrefWidth()/2), (airport.getLayoutY() + airport.getPrefHeight()/2)};
@@ -64,6 +63,7 @@ public class MapController implements Controller {
                     loadAirports();
                 }
 
+                int finalI = i;
                 airport.setOnAction(e -> {
                     try {
                         saveSelectedAirport(airports.get(finalI));
@@ -158,10 +158,10 @@ public class MapController implements Controller {
         }
     }
 
+
     static void incrementCounter() {
         Main.counter++;
     }
-
 
     @Override
     public void initialize() {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -21,5 +22,12 @@
       <Button fx:id="airport7" contentDisplay="GRAPHIC_ONLY" layoutX="909.0" layoutY="269.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="39.0" stylesheets="@mapStyle.css" />
       <Button fx:id="logout" layoutX="940.0" layoutY="0.0" mnemonicParsing="false" text="logout" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Button fx:id="planeList" layoutX="880.0" layoutY="0.0" mnemonicParsing="false" text="planes" AnchorPane.topAnchor="0.0" />
+      <Label layoutX="82.0" layoutY="129.0" text="Airport1" />
+      <Label layoutX="55.0" layoutY="320.0" text="Airport2" />
+      <Label layoutX="173.0" layoutY="457.0" text="Airport3" />
+      <Label layoutX="414.0" layoutY="138.0" text="Airport4" />
+      <Label layoutX="645.0" layoutY="129.0" text="Airport5" />
+      <Label layoutX="558.0" layoutY="510.0" text="Airport6" />
+      <Label layoutX="904.0" layoutY="252.0" text="Airport7" />
    </children>
 </AnchorPane>

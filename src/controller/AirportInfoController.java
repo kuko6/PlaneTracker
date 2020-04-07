@@ -7,6 +7,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import model.Airport;
+import model.Plane;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,20 +19,23 @@ public class AirportInfoController implements Controller {
     private AnchorPane currentScene;
 
     @FXML
-    private TableView<Airport> timeTable;
+    private TableView<Plane> arrivalsTable;
 
     @FXML
-    private TableColumn<Airport, String> arrivals;
+    private TableView<Plane> departuresTable;
 
     @FXML
-    private TableColumn<Airport, String> departures;
+    private TableColumn<Plane, String> arrivals;
 
-    private ObservableList<Airport> timeBoard = FXCollections.observableArrayList();
+    @FXML
+    private TableColumn<Plane, String> departures;
+
+    private ObservableList<Plane> arrivalsList = FXCollections.observableArrayList();
+    private ObservableList<Plane> departuresList = FXCollections.observableArrayList();
     private Airport airport;
 
     public AirportInfoController() {
         loadSelectedAirport();
-        timeBoard.add(this.airport);
     }
 
     private void loadSelectedAirport() {
@@ -44,29 +48,34 @@ public class AirportInfoController implements Controller {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        arrivalsList.addAll(airport.getArrivals());
+        departuresList.addAll(airport.getDepartures());
+        //timeBoard.addAll(airport.getArrivals());
+        //timeBoard.addAll(airport.getDepartures());
     }
 
     private void showTimetable() {
-        int i = 0, n = airport.getArrivals().size();
-        while (n != 0 && i < n) {
-            int finalI = i;
-            arrivals.setCellValueFactory(cellData -> cellData.getValue().getArrival(finalI).getArrivalInfo());
-            i++;
-        }
+        arrivals.setCellValueFactory(cellData -> cellData.getValue().getArrivalInfo());
+        departures.setCellValueFactory(cellData -> cellData.getValue().getDepartureInfo());
 
-        i = 0;
-        n = airport.getDepartures().size();
-        while (n != 0 && i < n) {
-            int finalI = i;
-            departures.setCellValueFactory(cellData -> cellData.getValue().getDeparture(finalI).getDepartureInfo());
-            i++;
-        }
+        arrivalsTable.setItems(arrivalsList);
+        departuresTable.setItems(departuresList);
+
+        /*
+        arrivals.setCellValueFactory(cellData -> cellData.getValue().getArrivalInfo());
+
+        timeBoard.removeAll();
+        timeBoard.addAll(airport.getDepartures());
+        departures.setCellValueFactory(cellData -> cellData.getValue().getDepartureInfo());
+        timeTable.setItems(timeBoard);
 
         if (timeBoard != null) {
             timeTable.setItems(timeBoard);
         } else {
             timeTable.managedProperty().bind(timeTable.visibleProperty());
         }
+         */
     }
 
     @Override

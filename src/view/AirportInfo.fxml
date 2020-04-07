@@ -4,13 +4,17 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="currentScene" fx:controller="controller.AirportInfoController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane fx:id="currentScene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AirportInfoController">
    <children>
-      <TableView fx:id="timeTable" fixedCellSize="0.0" opacity="0.9" prefHeight="200.0" prefWidth="500.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TableView fx:id="arrivalsTable" opacity="0.9" prefHeight="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columns>
           <TableColumn fx:id="arrivals" prefWidth="250.0" text="Arrivals" />
-            <TableColumn fx:id="departures" prefWidth="250.0" text="Departures" />
         </columns>
+      </TableView>
+      <TableView fx:id="departuresTable" opacity="0.9" layoutX="250.0" prefHeight="200.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="0.0">
+         <columns>
+            <TableColumn fx:id="departures" prefWidth="250.0" text="Departures" />
+         </columns>
       </TableView>
    </children>
 </AnchorPane>
