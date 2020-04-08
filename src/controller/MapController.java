@@ -67,6 +67,7 @@ public class MapController implements Controller {
                 airport.setOnAction(e -> {
                     try {
                         saveSelectedAirport(airports.get(finalI));
+                        savePlanes();
                         AnchorPane newScene = FXMLLoader.load(getClass().getResource("../view/AirportInfo.fxml"));
                         currentScene.getChildren().add(newScene);
 
