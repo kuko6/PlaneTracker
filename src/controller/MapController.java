@@ -1,16 +1,21 @@
 package controller;
 
+import controller.abstracts.Controller;
+import controller.abstracts.Serialization;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import model.*;
+import model.planes.Airbus;
+import model.planes.Boeing;
+import model.planes.Cessna;
+import model.planes.Plane;
 
 import java.io.*;
-import java.util.ArrayList;
 
-public class MapController implements Controller {
+public class MapController extends Serialization implements Controller {
 
     @FXML
     private AnchorPane currentScene;
@@ -21,93 +26,36 @@ public class MapController implements Controller {
     @FXML
     private Button planeList;
 
-    private ArrayList<Airport> airports = new ArrayList<>();
-    private ArrayList<Plane> planes = new ArrayList<>();
-
-
-    private void saveAirports() {
-        try {
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("data/airports.txt"));
-            objectOutputStream.writeObject(airports);
-            objectOutputStream.flush();
-            objectOutputStream.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public MapController() {
+        super();
     }
 
-    private void loadAirports() {
-        try {
-            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("data/airports.txt"));
-            this.airports = (ArrayList<Airport>) objectInputStream.readObject();
-            objectInputStream.close();
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void savePlanes() {
-        try {
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("data/currentPlanes.txt"));
-            objectOutputStream.writeObject(planes);
-            objectOutputStream.flush();
-            objectOutputStream.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadPlanes() {
-        try {
-            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("data/currentPlanes.txt"));
-            this.planes = (ArrayList<Plane>) objectInputStream.readObject();
-            objectInputStream.close();
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-
+    // nastavi vsetky buttony(letiska)
     private void initializeAirports() {
-        // nastavi vsetky buttony(letiska)
         int i = 0;
+
+        // prechadza vsetky deti sceny a hlada buttony, ktore reprezentuju letiska
         for (Node n : currentScene.getChildren()) {
             if (n instanceof Button && n.getId().contains("airport")) {
                 Button airport = (Button) n;
 
-                if (Main.counter == 0) {
+                if (Main.counter == 0) { // ked je zaciatok, teda este neboli vytvorene objekty letiska
                     double[] position = {(airport.getLayoutX() + airport.getPrefWidth() / 2), (airport.getLayoutY() + airport.getPrefHeight() / 2)};
                     airports.add(new Airport(airport.getId(), position));
-                    saveAirports();
+                    //saveAirports();
                 } else {
                     loadAirports();
                 }
 
                 int finalI = i;
-                airport.setOnAction(e -> {
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/AirportInfo.fxml"));
-                        AnchorPane newScene = loader.load();
-                        savePlanes();
-
-                        AirportInfoController controller = loader.getController();
-                        controller.loadSelectedAirport(airports.get(finalI));
-                        currentScene.getChildren().add(newScene);
-
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                });
+                airport.setOnAction(e -> showAirportInfo(finalI));
                 i++;
             }
         }
     }
 
     private void initializePlanes() {
+        // na zaciatku programu sa vytvori par lietadiel a ulozia sa do ArrayList lietadla
         if (Main.counter == 0) {
             Plane plane1 = new Airbus("A321", "Flyyyy", "1234");
             Plane plane2 = new Airbus("A321", "EasyFly", "2222");
@@ -136,8 +84,11 @@ public class MapController implements Controller {
             }
 
             savePlanes();
+            // znova sa ulozia aj letiska
+            // lebo plane.setStart/Destination sa zmenii ArrayList lietadiel, ktore z letiska odchadzaju alebo prichadzaju
             saveAirports();
         } else {
+            // ked uz boli vytvorene, tak sa len nacitaju
             loadPlanes();
         }
     }
@@ -146,15 +97,32 @@ public class MapController implements Controller {
         Main.counter++;
     }
 
+    // zobrazi dve tabulky s lietadlami, ktore z letiska odisli alebo do neho prichadzaju
+    private void showAirportInfo(int i) {
+        try {
+            savePlanes();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/AirportInfo.fxml"));
+            AnchorPane newScene = loader.load(); // nacita novu scenu z /view/...
+
+            AirportInfoController controller = loader.getController(); // ziska controller nacitanej sceny
+            controller.loadSelectedAirport(airports.get(i)); // "posle" do controlleru letisko, o ktorom sa maju zobrazit informacie
+            currentScene.getChildren().add(newScene); // prida na obrazovku tabulky
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    // zobrazi tabulku so vsetkymi lietadlami
     private void showPlaneList() {
         try {
             savePlanes();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/PlaneList.fxml"));
-            AnchorPane newScene = loader.load();
+            AnchorPane newScene = loader.load(); // nacita novu scenu z /view/...
 
-            PlaneListController controller = loader.getController();
-            controller.loadCurrentPlanes(planes);
-            currentScene.getChildren().add(newScene);
+            PlaneListController controller = loader.getController(); // ziska controller nacitanej sceny
+            controller.loadCurrentPlanes(planes); // "posle" do controlleru lietadla, ktore sa zobrazia v tabulke
+            currentScene.getChildren().add(newScene); // prida na obrazovku tabulku s lietadlami
 
         } catch (IOException ex) {
             ex.printStackTrace();

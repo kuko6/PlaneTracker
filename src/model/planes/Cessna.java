@@ -1,4 +1,4 @@
-package model;
+package model.planes;
 
 public class Cessna extends Plane {
 

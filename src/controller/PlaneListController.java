@@ -1,5 +1,6 @@
 package controller;
 
+import controller.abstracts.Controller;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,7 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
-import model.Plane;
+import model.planes.Plane;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class PlaneListController implements Controller {
     @FXML
     private TableColumn<Plane, String> destination;
 
-    private ArrayList<Plane> planes = new ArrayList<>();
+    private ArrayList<Plane> planes = new ArrayList<>(); // obsahuje vsetky lietadla
     private ObservableList<Plane> planeList;
 
 
@@ -44,31 +45,29 @@ public class PlaneListController implements Controller {
             return;
         }
 
+        // pre kazde lietadlo zobrazi jeho: id, meno zaciatocneho letiska a meno konecneho letiska
         for (Plane plane : planes) {
             id.setCellValueFactory(cellData -> cellData.getValue().getIdProperty());
             start.setCellValueFactory(cellData -> cellData.getValue().getStart().getNameProperty());
             destination.setCellValueFactory(cellData -> cellData.getValue().getDestinantion().getNameProperty());
         }
 
-        if (planeList != null) {
-            planeTable.setItems(planeList);
-        } else {
-            planeTable.managedProperty().bind(planeTable.visibleProperty());
-        }
+        planeTable.setItems(planeList);
     }
 
+    // po dvojkliku na lietadlo z tabulky, zobrazi novu tabulku s informaciami o konkretnom lietadle
     private void showPlaneInfo(TableView<Plane> table) {
         table.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2) {
-                Plane selectedPlane = table.getSelectionModel().getSelectedItem();
-                currentScene.getChildren().remove(planeTable);
+                Plane selectedPlane = table.getSelectionModel().getSelectedItem(); // vyberie lietadlo z tabulky
+                currentScene.getChildren().remove(planeTable); // vymaze zo sceny tabulku s lietadlami
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/PlaneInfo.fxml"));
                     AnchorPane newScene = loader.load();
 
                     PlaneInfoController controller = loader.getController();
                     controller.loadSelectedPlane(selectedPlane);
-                    currentScene.getChildren().add(newScene);
+                    currentScene.getChildren().add(newScene); // zobrazi tabulku s informaciami o lietadle
 
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -79,9 +78,8 @@ public class PlaneListController implements Controller {
 
     @Override
     public void initialize() {
-        Platform.runLater(() -> {
-            currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
-
+        currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
+        Platform.runLater(() -> { // potrebuje pockat, pokial sa nenacita
             showPlaneInfo(planeTable);
             showCurrentPlanes();
         });

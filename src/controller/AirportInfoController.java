@@ -1,5 +1,6 @@
 package controller;
 
+import controller.abstracts.Controller;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,7 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Airport;
-import model.Plane;
+import model.planes.Plane;
 
 import java.io.*;
 
@@ -36,7 +37,7 @@ public class AirportInfoController implements Controller {
     @FXML
     private TableColumn<Plane, String> departures;
 
-    private Airport airport;
+    private Airport airport; // zvolene letisko
     private ObservableList<Plane> arrivalsList = FXCollections.observableArrayList();
     private ObservableList<Plane> departuresList = FXCollections.observableArrayList();
 
@@ -49,19 +50,23 @@ public class AirportInfoController implements Controller {
     }
 
     private void showTimetable() {
+        // do tabulky prida vsetky lietadla, ktore ma zvolene letisko v ArrayList arrivals
         arrivals.setCellValueFactory(cellData -> cellData.getValue().getArrivalInfo());
+        // do tabulky prida vsetky lietadla, ktore ma zvolene letisko v ArrayList departures
         departures.setCellValueFactory(cellData -> cellData.getValue().getDepartureInfo());
 
         arrivalsTable.setItems(arrivalsList);
         departuresTable.setItems(departuresList);
     }
 
+    // po dvojkliku na lietadlo z tabulky, zobrazi novu tabulku s informaciami o konkretnom lietadle
     private void showPlaneInfo(TableView<Plane> table) {
         table.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2) {
                 Plane selectedPlane = table.getSelectionModel().getSelectedItem();
                 currentScene.getChildren().remove(arrivalsTable);
                 currentScene.getChildren().remove(departuresTable);
+                currentScene.getChildren().remove(add);
 
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/PlaneInfo.fxml"));
@@ -78,6 +83,8 @@ public class AirportInfoController implements Controller {
         });
     }
 
+    // zobrazi dialogove okno, v ktorom sa daju pridavat lietadla
+    // toto letisko je automaticky aciatocne letisko pre nove lietadlo
     private void showAddDialog() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/AddPlane.fxml"));
@@ -88,10 +95,9 @@ public class AirportInfoController implements Controller {
             Stage addDialog = new Stage();
             controller.setDialogStage(addDialog);
             controller.setStartAirport(airport);
-
             addDialog.setTitle("Add Departure");
             addDialog.setScene(scene);
-            addDialog.showAndWait();
+            addDialog.showAndWait(); // okno bude na obrazovke, az pokial ho pouzivatel nezrusi
 
             switchScene(currentScene, "Map");
 
@@ -102,11 +108,10 @@ public class AirportInfoController implements Controller {
 
     @Override
     public void initialize() {
+        // schova timeTable TableView
+        currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
+        add.setOnAction(e -> showAddDialog());
         Platform.runLater(() -> {
-            // schova timeTable TableView
-            currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
-            add.setOnAction(e -> showAddDialog());
-
             showPlaneInfo(arrivalsTable);
             showPlaneInfo(departuresTable);
             showTimetable();

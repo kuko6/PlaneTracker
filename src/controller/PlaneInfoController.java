@@ -1,11 +1,12 @@
 package controller;
 
+import controller.abstracts.Controller;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import model.Plane;
+import model.planes.Plane;
 
 public class PlaneInfoController implements Controller {
 
@@ -48,7 +49,7 @@ public class PlaneInfoController implements Controller {
     @FXML
     private Label speed;
 
-    private Plane plane;
+    private Plane plane; // zvolene lietadlo
 
 
     public void loadSelectedPlane(Plane plane) {
@@ -72,9 +73,8 @@ public class PlaneInfoController implements Controller {
 
     @Override
     public void initialize() {
+        currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
         Platform.runLater(() -> {
-            currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
-
             showInfoBoard();
         });
     }

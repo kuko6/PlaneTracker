@@ -1,7 +1,9 @@
-package model;
+package model.planes;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import model.Airport;
+import model.FlightPath;
 
 import java.io.Serializable;
 import java.time.LocalTime;
