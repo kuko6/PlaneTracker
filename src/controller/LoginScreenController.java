@@ -24,15 +24,10 @@ public class LoginScreenController implements Controller {
     @FXML
     private TextField username;
 
-    @FXML
-    public void initialize() {
-        //login.defaultButtonProperty().bind(login.focusedProperty());
-        login.setOnAction((e) -> authenticate());
-    }
 
     private void authenticate() {
         if (Objects.equals(username.getText(), "user") && (Objects.equals(password.getText(), "1234"))) {
-                this.switchScene(currentScene, "Map");
+            this.switchScene(currentScene, "Map");
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -42,9 +37,11 @@ public class LoginScreenController implements Controller {
 
             this.password.clear();
         }
+    }
 
-       /*System.out.println(username.getText());
-        System.out.println(password.getText());
-        System.out.println("ouch you clicked me");*/
+    @FXML
+    public void initialize() {
+        //login.defaultButtonProperty().bind(login.focusedProperty());
+        login.setOnAction((e) -> authenticate());
     }
 }

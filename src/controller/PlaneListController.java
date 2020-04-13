@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -7,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
-import model.Airport;
 import model.Plane;
 
 import java.io.*;
@@ -33,20 +33,10 @@ public class PlaneListController implements Controller {
     private ArrayList<Plane> planes = new ArrayList<>();
     private ObservableList<Plane> planeList;
 
-    public PlaneListController() {
-        loadCurrentPlanes();
-    }
 
-    private void loadCurrentPlanes() {
-        try {
-            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("data/currentPlanes.txt"));
-            planes = (ArrayList<Plane>) objectInputStream.readObject();
-            planeList = FXCollections.observableArrayList(planes);
-            objectInputStream.close();
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+    public void loadCurrentPlanes(ArrayList<Plane> currentPlanes) {
+        this.planes = currentPlanes;
+        planeList = FXCollections.observableArrayList(planes);
     }
 
     private void showCurrentPlanes() {
@@ -67,29 +57,17 @@ public class PlaneListController implements Controller {
         }
     }
 
-    private void saveSelectedPlane(Plane plane) {
-        try {
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("data/selectedPlane.txt"));
-            objectOutputStream.writeObject(plane);
-            objectOutputStream.flush();
-            objectOutputStream.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void initialize() {
-        currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
-        planeTable.setOnMouseClicked(e -> {
+    private void showPlaneInfo(TableView<Plane> table) {
+        table.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2) {
-                Plane selectedPlane = (Plane) planeTable.getSelectionModel().getSelectedItem();
-
+                Plane selectedPlane = table.getSelectionModel().getSelectedItem();
                 currentScene.getChildren().remove(planeTable);
                 try {
-                    saveSelectedPlane(selectedPlane);
-                    AnchorPane newScene = FXMLLoader.load(getClass().getResource("../view/PlaneInfo.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/PlaneInfo.fxml"));
+                    AnchorPane newScene = loader.load();
+
+                    PlaneInfoController controller = loader.getController();
+                    controller.loadSelectedPlane(selectedPlane);
                     currentScene.getChildren().add(newScene);
 
                 } catch (IOException ex) {
@@ -97,7 +75,15 @@ public class PlaneListController implements Controller {
                 }
             }
         });
+    }
 
-        showCurrentPlanes();
+    @Override
+    public void initialize() {
+        Platform.runLater(() -> {
+            currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
+
+            showPlaneInfo(planeTable);
+            showCurrentPlanes();
+        });
     }
 }

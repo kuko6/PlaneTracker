@@ -1,14 +1,11 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import model.Plane;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 
 public class PlaneInfoController implements Controller {
 
@@ -19,7 +16,7 @@ public class PlaneInfoController implements Controller {
     private GridPane infoTable;
 
     @FXML
-    private Label company;
+    private Label manufacturer;
 
     @FXML
     private Label id;
@@ -53,23 +50,13 @@ public class PlaneInfoController implements Controller {
 
     private Plane plane;
 
-    public PlaneInfoController() {
-        loadSelectedPlane();
-    }
 
-    private void loadSelectedPlane() {
-        try {
-            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("data/selectedPlane.txt"));
-            plane = (Plane) objectInputStream.readObject();
-            objectInputStream.close();
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+    public void loadSelectedPlane(Plane plane) {
+        this.plane = plane;
     }
 
     private void showInfoBoard() {
-        company.setText(plane.getCompany());
+        manufacturer.setText(plane.getManufacturer());
         type.setText(plane.getType());
         id.setText(plane.getId());
         airline.setText(plane.getAirline());
@@ -85,8 +72,10 @@ public class PlaneInfoController implements Controller {
 
     @Override
     public void initialize() {
-        currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
+        Platform.runLater(() -> {
+            currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
 
-        showInfoBoard();
+            showInfoBoard();
+        });
     }
 }

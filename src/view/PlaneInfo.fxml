@@ -27,7 +27,7 @@
             <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="company" text="company" />
+            <Label fx:id="manufacturer" text="manufacturer" />
             <Label fx:id="id" text="id" GridPane.rowIndex="1" />
             <Label text="start:" GridPane.rowIndex="2" />
             <Label fx:id="type" text="type" GridPane.columnIndex="1" />

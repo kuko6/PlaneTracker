@@ -2,13 +2,13 @@ package model;
 
 public class Boeing extends Plane {
 
-    private final String company = "Boeing";
+    private final String manufacturer = "Boeing";
 
     public Boeing(String type, String airline, String id) {
         super(type, airline, id);
     }
 
-    public final String getCompany() {
-        return this.company;
+    public final String getManufacturer() {
+        return this.manufacturer;
     }
 }

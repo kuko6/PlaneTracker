@@ -12,7 +12,7 @@ public abstract class Plane implements Serializable {
     private String type;
     private String airline;
     private String id;
-    private final String company = null;
+    private final String manufacturer = null;
 
     private double speed;
     private double altitude;
@@ -44,8 +44,8 @@ public abstract class Plane implements Serializable {
         return new SimpleStringProperty(type);
     }
 
-    public String getCompany() {
-        return company;
+    public String getManufacturer() {
+        return manufacturer;
     }
 
     public String getAirline() {

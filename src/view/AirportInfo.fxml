@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,10 +12,11 @@
           <TableColumn fx:id="arrivals" prefWidth="250.0" text="Arrivals" />
         </columns>
       </TableView>
-      <TableView fx:id="departuresTable" opacity="0.9" layoutX="250.0" prefHeight="200.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="0.0">
+      <TableView fx:id="departuresTable" layoutX="250.0" opacity="0.9" prefHeight="200.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="0.0">
          <columns>
             <TableColumn fx:id="departures" prefWidth="250.0" text="Departures" />
          </columns>
       </TableView>
+      <Button fx:id="add" layoutX="423.0" layoutY="200.0" mnemonicParsing="false" text="add plane" AnchorPane.leftAnchor="423.0" AnchorPane.topAnchor="200.0" />
    </children>
 </AnchorPane>
