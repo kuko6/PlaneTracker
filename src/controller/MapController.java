@@ -58,7 +58,7 @@ public class MapController implements Controller {
                 if (Main.counter == 0) {
                     double[] position = {(airport.getLayoutX() + airport.getPrefWidth()/2), (airport.getLayoutY() + airport.getPrefHeight()/2)};
                     airports.add(new Airport(airport.getId(), position));
-                    saveAirports();
+                    //saveAirports();
                 } else {
                     loadAirports();
                 }
@@ -130,14 +130,14 @@ public class MapController implements Controller {
             for (Plane p : planes) {
                 p.takeoff();
             }
-
             savePlanes();
             saveAirports();
+
         } else {
             loadPlanes();
         }
 
-        planes.get(0).getFlightPath().updatePosition(100);
+        //planes.get(0).getFlightPath().updatePosition(100);
 
         /*
         double[] startLocation = plane1.getStart().getLocation();

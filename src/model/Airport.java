@@ -36,9 +36,7 @@ public class Airport implements Serializable {
         this.arrivals.add(plane);
     }
 
-    public Plane getArrival(int i) {
-        return this.arrivals.get(i);
-    }
+    public Plane getArrival(int i) { return this.arrivals.get(i); }
 
     public void removeArrival(Plane landed) {
         arrivals.remove(landed);

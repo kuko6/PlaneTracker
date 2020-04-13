@@ -22,7 +22,5 @@ public interface Controller {
         }
 
     }
-
-
 }
 

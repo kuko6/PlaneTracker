@@ -85,7 +85,6 @@ public class PlaneListController implements Controller {
         planeTable.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2) {
                 Plane selectedPlane = (Plane) planeTable.getSelectionModel().getSelectedItem();
-                //System.out.println(p.getId());
 
                 currentScene.getChildren().remove(planeTable);
                 try {

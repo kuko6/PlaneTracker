@@ -42,7 +42,7 @@ public class AirportInfoController implements Controller {
             ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("data/selectedAirport.txt"));
             airport = (Airport) objectInputStream.readObject();
             objectInputStream.close();
-            System.out.println(airport.getName());
+            //System.out.println(airport.getName());
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -113,7 +113,6 @@ public class AirportInfoController implements Controller {
         currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
 
         showPlaneInfo(arrivalsTable);
-
         showPlaneInfo(departuresTable);
 
         showTimetable();
