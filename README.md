@@ -23,12 +23,12 @@ jednoduchý **polymorfizmus** sa nachádza v triede `PlaneInfoController`, kde s
 
 
 ## Todo
--[x] vedieť zobraziť prílety a odlety konkrétneho letiska
--[x] vedieť zobraziť všetky lietadlá
--[x] vedieť zobraziť informácie o lietadle
--[x] vedieť pridať lietadlo
--[ ] simulácia letu lietadla
--[ ] vedieť zobraziť lietadlo a jeho dráhu na mape
--[ ] registrácia rôznych používateľov
--[ ] vedieť vygenerovať textový súbor s informáciami o lietadle/letisku
--[ ] ošetriť výnimnky
+- [x] vedieť zobraziť prílety a odlety konkrétneho letiska
+- [x] vedieť zobraziť všetky lietadlá
+- [x] vedieť zobraziť informácie o lietadle
+- [x] vedieť pridať lietadlo
+- [ ] simulácia letu lietadla
+- [ ] vedieť zobraziť lietadlo a jeho dráhu na mape
+- [ ] registrácia rôznych používateľov
+- [ ] vedieť vygenerovať textový súbor s informáciami o lietadle/letisku
+- [ ] ošetriť výnimnky
