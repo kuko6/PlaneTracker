@@ -99,7 +99,7 @@ public class AddPlaneController extends Serialization implements Controller {
             }
             if (airport.getName().equals(start.getName())) {
                 tmp = airport;
-                //newPlane.setStart(airport);
+                //newPlane.setStart(airport); // takto by to zapisalo zly objekt
             }
         }
 
@@ -109,7 +109,6 @@ public class AddPlaneController extends Serialization implements Controller {
             newPlane.setStart(tmp);
             newPlane.takeoff();
             planes.add(newPlane);
-            System.out.println(newPlane.getDestinantion());
             saveAirports();
             savePlanes();
 
