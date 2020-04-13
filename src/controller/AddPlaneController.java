@@ -90,22 +90,26 @@ public class AddPlaneController extends Serialization implements Controller {
             showErrorDialog("Manufacturer");
             return;
         }
+        
+        Airport tmp = null;
 
         for (Airport airport : airports) {
             if (airport.getName().equalsIgnoreCase(destination.getText())) {
                 newPlane.setDestinantion(airport);
             }
             if (airport.getName().equals(start.getName())) {
-                newPlane.setStart(airport);
+                tmp = airport;
+                //newPlane.setStart(airport);
             }
         }
 
         if (newPlane.getDestinantion() == null) { // pouzivatel zadal nespravnu destinaciu
             showErrorDialog("Destination");
         } else {
+            newPlane.setStart(tmp);
             newPlane.takeoff();
             planes.add(newPlane);
-
+            System.out.println(newPlane.getDestinantion());
             saveAirports();
             savePlanes();
 
