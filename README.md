@@ -2,7 +2,7 @@
 **Jakub Povinec**
 
 ## Pracovná verzia
-V tejto verzií som sa sústredil na vytvorenie grafického prostredia, hlavne zobrazenia informácií o letiskách a lietadlách.
+V tejto verzií som sa sústredil na vytvorenie grafického rozhrania, hlavne zobrazenia informácií o letiskách a lietadlách.
 
 **V aplikácií sa zatiaľ dajú:**
 - zobraziť prílety a odlety zvoleného letiska
