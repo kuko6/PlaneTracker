@@ -74,8 +74,6 @@ public class PlaneInfoController implements Controller {
     @Override
     public void initialize() {
         currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
-        Platform.runLater(() -> {
-            showInfoBoard();
-        });
+        Platform.runLater(() -> showInfoBoard());
     }
 }

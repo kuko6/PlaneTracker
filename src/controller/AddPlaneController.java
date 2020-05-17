@@ -3,9 +3,7 @@ package controller;
 import controller.abstracts.Controller;
 import controller.abstracts.Serialization;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.*;
@@ -22,7 +20,7 @@ public class AddPlaneController extends Serialization implements Controller {
     private AnchorPane currentScene;
 
     @FXML
-    private TextField manufacturer;
+    private MenuButton manufacturer;
 
     @FXML
     private TextField type;
@@ -47,6 +45,8 @@ public class AddPlaneController extends Serialization implements Controller {
     private Plane newPlane; // novo vytvorene lietadlo
     private Airport start; // letisko, z ktoreho bolo zavolane dialogove okno, zaciatocne letisko pre nove lietadlo
 
+    private String planeManufacturer;
+
     public AddPlaneController() {
         super();
     }
@@ -68,9 +68,7 @@ public class AddPlaneController extends Serialization implements Controller {
         alert.setContentText("You entered incorrect " + error + ". \nPlease try again.");
         alert.showAndWait();
 
-        if (Objects.equals(error, "Manufacturer")) {
-            this.manufacturer.clear();
-        } else if (Objects.equals(error, "Destination")) {
+        if (error.equals("Destination")) {
             this.destination.clear();
         }
     }
@@ -79,16 +77,21 @@ public class AddPlaneController extends Serialization implements Controller {
         if (Objects.equals(type.getText(),"") || Objects.equals(airline.getText(),"") || Objects.equals(id.getText(),"")) {
             showErrorDialog("Type, Airline or ID");
             return;
-        } else if (Objects.equals(manufacturer.getText(), "Airbus")) {
-            this.newPlane = new Airbus(type.getText(), airline.getText(), id.getText());
-        } else if (Objects.equals(manufacturer.getText(), "Boeing")) {
-            this.newPlane = new Boeing(type.getText(), airline.getText(), id.getText());
-        } else if (Objects.equals(manufacturer.getText(), "Cessna")) {
-            this.newPlane = new Cessna(type.getText(), airline.getText(), id.getText());
-        } else {
-            // pouzivatel zadal nespravneho vyrobcu
+        } else if (manufacturer.getText().equals("Manufacturer")) {
             showErrorDialog("Manufacturer");
             return;
+        }
+
+        switch (planeManufacturer) {
+            case "Airbus":
+                this.newPlane = new Airbus(type.getText(), airline.getText(), id.getText());
+                break;
+            case "Boeing":
+                this.newPlane = new Boeing(type.getText(), airline.getText(), id.getText());
+                break;
+            case "Cessna":
+                this.newPlane = new Cessna(type.getText(), airline.getText(), id.getText());
+                break;
         }
         
         Airport tmp = null;
@@ -103,7 +106,10 @@ public class AddPlaneController extends Serialization implements Controller {
             }
         }
 
-        if (newPlane.getDestinantion() == null) { // pouzivatel zadal nespravnu destinaciu
+        // pouzivatel zadal nespravnu destinaciu:
+        // letisko, ktore neexistuje
+        // rovnake letisko ako je start
+        if (tmp == null || newPlane.getDestinantion() == null || newPlane.getDestinantion().getName().equals(start.getName())) {
             showErrorDialog("Destination");
         } else {
             newPlane.setStart(tmp);
@@ -129,6 +135,12 @@ public class AddPlaneController extends Serialization implements Controller {
 
         add.setOnAction(e -> addPlane());
         cancel.setOnAction(e -> closeDialog());
+        for (MenuItem choice : manufacturer.getItems()) {
+            choice.setOnAction(e -> {
+                planeManufacturer = choice.getText();
+                manufacturer.setText(planeManufacturer);
+                //System.out.println(planeManufacturer);
+            });
+        }
     }
-
 }
