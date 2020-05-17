@@ -70,7 +70,7 @@ public class AddPlaneController extends Serialization implements Controller {
 
         if (Objects.equals(error, "Manufacturer")) {
             this.manufacturer.clear();
-        } else {
+        } else if (Objects.equals(error, "Destination")) {
             this.destination.clear();
         }
     }
@@ -99,7 +99,7 @@ public class AddPlaneController extends Serialization implements Controller {
             }
             if (airport.getName().equals(start.getName())) {
                 tmp = airport;
-                //newPlane.setStart(airport); // takto by to zapisalo zly objekt
+                //newPlane.setStart(airport); // takto by to zapisal zly objekt
             }
         }
 

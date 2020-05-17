@@ -33,7 +33,6 @@ public class MapController extends Serialization implements Controller {
     // nastavi vsetky buttony(letiska)
     private void initializeAirports() {
         int i = 0;
-
         // prechadza vsetky deti sceny a hlada buttony, ktore reprezentuju letiska
         for (Node n : currentScene.getChildren()) {
             if (n instanceof Button && n.getId().contains("airport")) {
@@ -138,7 +137,7 @@ public class MapController extends Serialization implements Controller {
 
         planeList.setOnAction(e -> showPlaneList());
         logout.setOnAction(e -> {
-            this.switchScene(currentScene ,"LoginScreen");
+            switchScene(currentScene ,"LoginScreen");
             Main.counter = 0;
         });
     }
