@@ -39,7 +39,7 @@ public class MapController extends Serialization implements Controller {
                 Button airport = (Button) n;
 
                 if (Main.counter == 0) { // ked je zaciatok, teda este neboli vytvorene objekty letiska
-                    double[] position = {(airport.getLayoutX() + airport.getPrefWidth() / 2), (airport.getLayoutY() + airport.getPrefHeight() / 2)};
+                    double[] position = {(airport.getLayoutX() + airport.getPrefWidth()/2), (airport.getLayoutY() + airport.getPrefHeight()/2)};
                     airports.add(new Airport(airport.getId(), position));
                     //saveAirports();
                 } else {
@@ -67,16 +67,16 @@ public class MapController extends Serialization implements Controller {
             planes.add(plane4);
 
             plane1.setStart(airports.get(0));
-            plane1.setDestinantion(airports.get(2));
+            plane1.setDestination(airports.get(2));
 
             plane2.setStart(airports.get(3));
-            plane2.setDestinantion(airports.get(0));
+            plane2.setDestination(airports.get(0));
 
             plane3.setStart(airports.get(0));
-            plane3.setDestinantion(airports.get(1));
+            plane3.setDestination(airports.get(1));
 
             plane4.setStart(airports.get(3));
-            plane4.setDestinantion(airports.get(6));
+            plane4.setDestination(airports.get(6));
 
             for (Plane p : planes) {
                 p.takeoff();
@@ -84,7 +84,7 @@ public class MapController extends Serialization implements Controller {
 
             savePlanes();
             // znova sa ulozia aj letiska
-            // lebo plane.setStart/Destination sa zmenii ArrayList lietadiel, ktore z letiska odchadzaju alebo prichadzaju
+            // lebo plane.setStart/Destination zmenii ArrayList lietadiel, ktore z letiska odchadzaju alebo prichadzaju
             saveAirports();
         } else {
             // ked uz boli vytvorene, tak sa len nacitaju
@@ -132,6 +132,12 @@ public class MapController extends Serialization implements Controller {
     public void initialize() {
         initializeAirports();
         initializePlanes();
+
+        if (Main.counter == 0) {
+            Thread airTrafic = new Thread(new AirTraffic(currentScene));
+            airTrafic.setDaemon(true);
+            airTrafic.start();
+        }
 
         incrementCounter();
 

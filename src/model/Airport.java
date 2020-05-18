@@ -63,6 +63,12 @@ public class Airport implements Serializable {
         return departures;
     }
 
+    public void updatePlane(Plane plane) {
+        int i = this.departures.indexOf(plane);
+        //System.out.println(this.departures.contains(plane));
+        System.out.println(this.departures.get(i).getFlightPath().getCompleted());
+    }
+
     public void allowTakeoff(Plane plane) {
         plane.takeoff();
         this.addDeparture(plane);

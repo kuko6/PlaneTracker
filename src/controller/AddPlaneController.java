@@ -98,7 +98,7 @@ public class AddPlaneController extends Serialization implements Controller {
 
         for (Airport airport : airports) {
             if (airport.getName().equalsIgnoreCase(destination.getText())) {
-                newPlane.setDestinantion(airport);
+                newPlane.setDestination(airport);
             }
             if (airport.getName().equals(start.getName())) {
                 tmp = airport;
@@ -109,7 +109,7 @@ public class AddPlaneController extends Serialization implements Controller {
         // pouzivatel zadal nespravnu destinaciu:
         // letisko, ktore neexistuje
         // rovnake letisko ako je start
-        if (tmp == null || newPlane.getDestinantion() == null || newPlane.getDestinantion().getName().equals(start.getName())) {
+        if (tmp == null || newPlane.getDestination() == null || newPlane.getDestination().getName().equals(start.getName())) {
             showErrorDialog("Destination");
         } else {
             newPlane.setStart(tmp);

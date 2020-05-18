@@ -20,7 +20,7 @@ public abstract class Plane implements Serializable {
     private double altitude;
 
     private Airport start;
-    private Airport destinantion;
+    private Airport destination;
 
     private String startTime;
     private String arrivalTime;
@@ -59,7 +59,7 @@ public abstract class Plane implements Serializable {
     }
 
     public StringProperty getDepartureInfo() {
-        return new SimpleStringProperty(id + " | " + airline + " | " + startTime + " | " + destinantion.getName());
+        return new SimpleStringProperty(id + " | " + airline + " | " + startTime + " | " + destination.getName());
     }
 
     public String getId() {
@@ -67,6 +67,8 @@ public abstract class Plane implements Serializable {
     }
 
     public StringProperty getIdProperty() { return new SimpleStringProperty(id); }
+
+    public void updateAirport() { this.start.updatePlane(this); }
 
     public double getSpeed() {
         return speed;
@@ -99,13 +101,13 @@ public abstract class Plane implements Serializable {
         start.addDeparture(this);
     }
 
-    public Airport getDestinantion() {
-        return destinantion;
+    public Airport getDestination() {
+        return destination;
     }
 
-    public void setDestinantion(Airport destinantion) {
-        this.destinantion = destinantion;
-        destinantion.addArrival(this);
+    public void setDestination(Airport destination) {
+        this.destination = destination;
+        destination.addArrival(this);
     }
 
     public String getStartTime() {
@@ -121,7 +123,7 @@ public abstract class Plane implements Serializable {
     }
 
     public void takeoff() {
-        this.flightPath = new FlightPath(start.getLocation(), destinantion.getLocation());
+        this.flightPath = new FlightPath(start.getLocation(), destination.getLocation());
     }
 
     public void land() {

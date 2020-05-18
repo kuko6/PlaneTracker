@@ -63,7 +63,7 @@ public class PlaneInfoController implements Controller {
         airline.setText(plane.getAirline());
         start.setText(plane.getStart().getName());
         startTime.setText(plane.getStartTime());
-        destination.setText(plane.getDestinantion().getName());
+        destination.setText(plane.getDestination().getName());
         arrivalTime.setText(plane.getArrivalTime());
         completed.setText(plane.getFlightPath().getCompleted() + "%");
         altitude.setText(plane.getAltitude() + " ft");

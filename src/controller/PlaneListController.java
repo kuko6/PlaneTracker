@@ -49,7 +49,7 @@ public class PlaneListController implements Controller {
         for (Plane plane : planes) {
             id.setCellValueFactory(cellData -> cellData.getValue().getIdProperty());
             start.setCellValueFactory(cellData -> cellData.getValue().getStart().getNameProperty());
-            destination.setCellValueFactory(cellData -> cellData.getValue().getDestinantion().getNameProperty());
+            destination.setCellValueFactory(cellData -> cellData.getValue().getDestination().getNameProperty());
         }
 
         planeTable.setItems(planeList);

@@ -17,7 +17,7 @@ public class FlightPath implements Serializable {
     private double travelled;
     private double completed;
 
-    public FlightPath(double[] start, double destination[]) {
+    public FlightPath(double[] start, double[] destination) {
         /*
         this.startX = start[0];
         this.startY = start[1];
