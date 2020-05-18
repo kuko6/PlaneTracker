@@ -10,14 +10,18 @@ import javafx.util.Duration;
 import model.Airport;
 import model.planes.Plane;
 
+import java.util.ArrayList;
+
 public class AirTraffic extends Serialization implements Runnable {
 
     private int i = 0;
     AnchorPane currentScene;
 
-    public AirTraffic(AnchorPane currentScene) {
+    public AirTraffic(AnchorPane currentScene, ArrayList<Airport> airports, ArrayList<Plane> planes) {
         super();
         System.out.println("zacinam");
+        this.airports = airports;
+        this.planes = planes;
         this.currentScene = currentScene;
     }
 
@@ -28,20 +32,27 @@ public class AirTraffic extends Serialization implements Runnable {
         //Plane plane = planes.get(0);
         Plane plane;
         while (true) {
-            loadPlanes();
-            loadAirports();
-            plane = planes.get(0);
-            plane.getFlightPath().updatePosition(10);
-            plane.updateAirport();
-            System.out.println(plane.getStart().getDeparture(0).getFlightPath().getCompleted());
+            if (planes.size() > 0) {
+                plane = planes.get(0);
+                plane.getFlightPath().updatePosition(30);
+                plane.updateAirport();
+                if (!plane.getStatus()) {
+                    planes.remove(plane);
+                }
+            }
+
+            //System.out.println(plane.getStart().getDeparture(0).getFlightPath().getCompleted());
+            //System.out.println(airports.contains(plane.getStart()));
+
             saveAirports();
             savePlanes();
             if (Main.counter == 0) { // toto teoreticky ani nebude treba
                 System.out.println("koncim");
                 break;
             }
-            System.out.println(i);
-            i++;
+            //System.out.println(i);
+            //i++;
+
             //rectangle.setX(rectangle.getX() + 5);
             try {
                 Thread.sleep(2000);
@@ -49,6 +60,7 @@ public class AirTraffic extends Serialization implements Runnable {
                 e.printStackTrace();
             }
         }
+
         /*
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), e -> {
             System.out.println(i);

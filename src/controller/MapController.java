@@ -81,7 +81,6 @@ public class MapController extends Serialization implements Controller {
             for (Plane p : planes) {
                 p.takeoff();
             }
-
             savePlanes();
             // znova sa ulozia aj letiska
             // lebo plane.setStart/Destination zmenii ArrayList lietadiel, ktore z letiska odchadzaju alebo prichadzaju
@@ -99,7 +98,8 @@ public class MapController extends Serialization implements Controller {
     // zobrazi dve tabulky s lietadlami, ktore z letiska odisli alebo do neho prichadzaju
     private void showAirportInfo(int i) {
         try {
-            savePlanes();
+            //loadPlanes();
+            loadAirports(); // to aby sa updatli potom, ked sa lietadla v AirTraffic zmenili
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/AirportInfo.fxml"));
             AnchorPane newScene = loader.load(); // nacita novu scenu z /view/...
 
@@ -115,7 +115,7 @@ public class MapController extends Serialization implements Controller {
     // zobrazi tabulku so vsetkymi lietadlami
     private void showPlaneList() {
         try {
-            savePlanes();
+            loadPlanes(); // to aby sa updatli
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/PlaneList.fxml"));
             AnchorPane newScene = loader.load(); // nacita novu scenu z /view/...
 
@@ -134,7 +134,7 @@ public class MapController extends Serialization implements Controller {
         initializePlanes();
 
         if (Main.counter == 0) {
-            Thread airTrafic = new Thread(new AirTraffic(currentScene));
+            Thread airTrafic = new Thread(new AirTraffic(currentScene, airports, planes));
             airTrafic.setDaemon(true);
             airTrafic.start();
         }

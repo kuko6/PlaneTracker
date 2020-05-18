@@ -56,7 +56,7 @@ public class Airport implements Serializable {
     }
 
     public void removeDeparture(Plane plane) {
-        arrivals.remove(plane);
+        departures.remove(plane);
     }
 
     public ArrayList<Plane> getDepartures() {
@@ -65,17 +65,11 @@ public class Airport implements Serializable {
 
     public void updatePlane(Plane plane) {
         int i = this.departures.indexOf(plane);
-        //System.out.println(this.departures.contains(plane));
         System.out.println(this.departures.get(i).getFlightPath().getCompleted());
-    }
-
-    public void allowTakeoff(Plane plane) {
-        plane.takeoff();
-        this.addDeparture(plane);
-    }
-
-    public void allowLanding(Plane plane) {
-        plane.land();
-        this.addArrival(plane);
+        if (this.departures.get(i).getFlightPath().getCompleted() >= 100) {
+            System.out.println("tutut");
+            plane.land();
+        }
+        //System.out.println(this.departures.contains(plane));
     }
 }

@@ -27,6 +27,8 @@ public abstract class Plane implements Serializable {
 
     private FlightPath flightPath;
 
+    private boolean flying;
+
     public Plane(String type, String airline, String id) {
         this.type = type;
         this.airline = airline;
@@ -67,6 +69,8 @@ public abstract class Plane implements Serializable {
     }
 
     public StringProperty getIdProperty() { return new SimpleStringProperty(id); }
+
+    public boolean getStatus() { return this.flying; }
 
     public void updateAirport() { this.start.updatePlane(this); }
 
@@ -124,11 +128,13 @@ public abstract class Plane implements Serializable {
 
     public void takeoff() {
         this.flightPath = new FlightPath(start.getLocation(), destination.getLocation());
+        this.flying = true;
     }
 
     public void land() {
         this.flightPath = null;
-        start.removeArrival(this);
+        this.flying = false;
+        destination.removeArrival(this);
         start.removeDeparture(this);
     }
 
