@@ -6,11 +6,14 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import model.Airport;
 import model.planes.Plane;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AirTraffic extends Serialization implements Runnable {
 
@@ -44,7 +47,7 @@ public class AirTraffic extends Serialization implements Runnable {
                     planes.remove(plane);
                 }
             }
-
+            //System.out.println("Thread name="+Thread.currentThread().getName());
             //System.out.println(plane.getStart().getDeparture(0).getFlightPath().getCompleted());
             //System.out.println(airports.contains(plane.getStart()));
 
@@ -52,6 +55,7 @@ public class AirTraffic extends Serialization implements Runnable {
             savePlanes();
             if (Main.counter == 0) { // toto teoreticky ani nebude treba
                 System.out.println("koncim");
+                Thread.currentThread().interrupt();
                 break;
             }
             //System.out.println(i);

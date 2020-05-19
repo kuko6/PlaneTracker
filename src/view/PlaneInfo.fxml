@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="currentScene" fx:controller="controller.PlaneInfoController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane fx:id="currentScene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PlaneInfoController">
    <children>
       <GridPane fx:id="infoTable" opacity="0.9" prefHeight="300.0" prefWidth="200.0" style="-fx-background-color: #ebf0f2#ebf0f2;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -50,5 +51,6 @@
             <Insets left="5.0" />
          </padding>
       </GridPane>
+      <Button fx:id="ref" layoutX="138.0" layoutY="300.0" mnemonicParsing="false" text="refresh" />
    </children>
 </AnchorPane>

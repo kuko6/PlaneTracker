@@ -139,6 +139,7 @@ public class MapController extends Serialization implements Controller {
             airTrafic.setDaemon(true);
             airTrafic.start();
         }
+
         //System.out.println(planes.get(0).getStart() + " " + planes.get(2).getStart());
         //System.out.println(planes.get(0).getStart().getDeparture(0) + " " + planes.get(0)); // funguje to pog
         //System.out.println(planes.get(0).getStart().getDeparture(1) + " " + planes.get(2)); // aj toto funguje pog
