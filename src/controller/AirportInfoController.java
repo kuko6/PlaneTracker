@@ -2,6 +2,7 @@ package controller;
 
 import controller.abstracts.Controller;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -64,6 +65,10 @@ public class AirportInfoController implements Controller {
         table.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2) {
                 Plane selectedPlane = table.getSelectionModel().getSelectedItem();
+                if (selectedPlane == null) { // ked je tabulka prazdna
+                    System.out.println("nothing to click on :(");
+                    return;
+                }
                 currentScene.getChildren().remove(arrivalsTable);
                 currentScene.getChildren().remove(departuresTable);
                 currentScene.getChildren().remove(add);

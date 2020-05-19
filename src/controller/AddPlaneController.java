@@ -73,9 +73,21 @@ public class AddPlaneController extends Serialization implements Controller {
         }
     }
 
+    private boolean checkPlaneID(String id) {
+        for (Plane plane : planes) {
+            if (plane.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void addPlane() {
         if (Objects.equals(type.getText(),"") || Objects.equals(airline.getText(),"") || Objects.equals(id.getText(),"")) {
             showErrorDialog("Type, Airline or ID");
+            return;
+        } else if (checkPlaneID(id.getText())) {
+            showErrorDialog("ID");
             return;
         } else if (manufacturer.getText().equals("Manufacturer")) {
             showErrorDialog("Manufacturer");
@@ -100,7 +112,7 @@ public class AddPlaneController extends Serialization implements Controller {
             if (airport.getName().equalsIgnoreCase(destination.getText())) {
                 newPlane.setDestination(airport);
             }
-            if (airport.getName().equals(start.getName())) {
+            if (airport.getName().equalsIgnoreCase(start.getName())) {
                 tmp = airport;
                 //newPlane.setStart(airport); // takto by to zapisal zly objekt
             }

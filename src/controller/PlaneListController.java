@@ -60,6 +60,10 @@ public class PlaneListController implements Controller {
         table.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2) {
                 Plane selectedPlane = table.getSelectionModel().getSelectedItem(); // vyberie lietadlo z tabulky
+                if (selectedPlane == null) { // ked je tabulka prazdna
+                    System.out.println("nothing to click on :(");
+                    return;
+                }
                 currentScene.getChildren().remove(planeTable); // vymaze zo sceny tabulku s lietadlami
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/PlaneInfo.fxml"));
