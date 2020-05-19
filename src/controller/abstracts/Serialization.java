@@ -13,6 +13,25 @@ public abstract class Serialization {
     public ArrayList<Airport> airports = new ArrayList<>();
     public ArrayList<Plane> planes = new ArrayList<>();
 
+    // toto asi nie je najlepsie riesenie, ale funguje to xd
+    // problem bol, ze pri serializacii a potom deserializacii sa menia referencie na objekty
+    // takze napriklad, ked je start lietadla v airport1 nie je to to iste letisko ako airport1 ulozene v airports
+    public void repairReferences() {
+        String airportName;
+        int airportIndex;
+        for (Plane plane : planes) {
+            airportName = plane.getStart().getName();
+            airportName = airportName.replace("airport", "");
+            airportIndex = Integer.parseInt(airportName) - 1;
+            airports.set(airportIndex, plane.getStart());
+
+            airportName = plane.getDestination().getName();
+            airportName = airportName.replace("airport", "");
+            airportIndex = Integer.parseInt(airportName) - 1;
+            airports.set(airportIndex, plane.getDestination());
+        }
+    }
+
     public void saveAirports() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
@@ -60,6 +79,7 @@ public abstract class Serialization {
             String p = path.toString() + "/data/currentPlanes.txt";
             ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(p));
             planes = (ArrayList<Plane>) objectInputStream.readObject();
+            repairReferences();
             objectInputStream.close();
 
         } catch (IOException | ClassNotFoundException e) {

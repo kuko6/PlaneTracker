@@ -64,10 +64,15 @@ public class Airport implements Serializable {
     }
 
     public void updatePlane(Plane plane) {
-        int i = this.departures.indexOf(plane);
-        System.out.println(this.departures.get(i).getFlightPath().getCompleted());
-        if (this.departures.get(i).getFlightPath().getCompleted() >= 100) {
-            System.out.println("tutut");
+        int i = -1;
+        if (this.departures.contains(plane)) {
+            i = this.departures.indexOf(plane);
+        } else if (this.arrivals.contains(plane)) {
+            i = this.arrivals.indexOf(plane);
+        }
+
+        //System.out.println(this.departures.get(i).getFlightPath().getCompleted());
+        if (plane.getFlightPath().getCompleted() >= 100) {
             plane.land();
         }
         //System.out.println(this.departures.contains(plane));

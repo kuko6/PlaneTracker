@@ -14,6 +14,7 @@ import model.planes.Cessna;
 import model.planes.Plane;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class MapController extends Serialization implements Controller {
 
@@ -138,6 +139,11 @@ public class MapController extends Serialization implements Controller {
             airTrafic.setDaemon(true);
             airTrafic.start();
         }
+        //System.out.println(planes.get(0).getStart() + " " + planes.get(2).getStart());
+        //System.out.println(planes.get(0).getStart().getDeparture(0) + " " + planes.get(0)); // funguje to pog
+        //System.out.println(planes.get(0).getStart().getDeparture(1) + " " + planes.get(2)); // aj toto funguje pog
+        //System.out.println(planes.get(0).getStart() + " " + airports.get(0));
+        //System.out.println(planes.get(0).equals(airports.get(0).getDeparture(0)));
 
         incrementCounter();
 

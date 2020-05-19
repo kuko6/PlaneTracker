@@ -127,11 +127,13 @@ public abstract class Plane implements Serializable {
     }
 
     public void takeoff() {
+        System.out.println("Plane id: " + this.id + " took off from " + this.start.getName());
         this.flightPath = new FlightPath(start.getLocation(), destination.getLocation());
         this.flying = true;
     }
 
     public void land() {
+        System.out.println("Plane id: " + this.id + " is landing in " + this.destination.getName());
         this.flightPath = null;
         this.flying = false;
         destination.removeArrival(this);

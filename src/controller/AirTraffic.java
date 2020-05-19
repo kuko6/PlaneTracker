@@ -16,6 +16,7 @@ public class AirTraffic extends Serialization implements Runnable {
 
     private int i = 0;
     AnchorPane currentScene;
+    ArrayList<Plane> tmpPlanes;
 
     public AirTraffic(AnchorPane currentScene, ArrayList<Airport> airports, ArrayList<Plane> planes) {
         super();
@@ -30,12 +31,15 @@ public class AirTraffic extends Serialization implements Runnable {
         //Rectangle rectangle = new Rectangle(500, 200, 50, 50);
         //currentScene.getChildren().add(rectangle);
         //Plane plane = planes.get(0);
-        Plane plane;
+        //Plane plane;
         while (true) {
-            if (planes.size() > 0) {
-                plane = planes.get(0);
+            loadAirports();
+            loadPlanes();
+            tmpPlanes = new ArrayList<Plane>(planes);
+            for (Plane plane : tmpPlanes) {
                 plane.getFlightPath().updatePosition(30);
                 plane.updateAirport();
+                //System.out.println(tmpPlanes.size() + " " + planes.size());
                 if (!plane.getStatus()) {
                     planes.remove(plane);
                 }
