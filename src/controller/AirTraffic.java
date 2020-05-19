@@ -1,19 +1,11 @@
 package controller;
 
 import controller.abstracts.Serialization;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
-import javafx.stage.Window;
-import javafx.util.Duration;
 import model.Airport;
 import model.planes.Plane;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AirTraffic extends Serialization implements Runnable {
 
@@ -38,10 +30,11 @@ public class AirTraffic extends Serialization implements Runnable {
         while (true) {
             loadAirports();
             loadPlanes();
-            tmpPlanes = new ArrayList<Plane>(planes);
+            tmpPlanes = new ArrayList<Plane>(planes); // takto, lebo menim list pocas toho ako o prechadzam
             for (Plane plane : tmpPlanes) {
-                plane.getFlightPath().updatePosition(30);
-                plane.updateAirport();
+                //plane.getFlightPath().updatePosition(30);
+                plane.fly();
+                plane.contactAirport();
                 //System.out.println(tmpPlanes.size() + " " + planes.size());
                 if (!plane.getStatus()) {
                     planes.remove(plane);
@@ -63,7 +56,7 @@ public class AirTraffic extends Serialization implements Runnable {
 
             //rectangle.setX(rectangle.getX() + 5);
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000); // opakuje sa kazdu sekundu
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

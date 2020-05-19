@@ -11,34 +11,35 @@ import java.time.format.DateTimeFormatter;
 
 public abstract class Plane implements Serializable {
 
-    private String type;
-    private String airline;
-    private String id;
-    private final String manufacturer = null;
+    protected String type;
+    protected String airline;
+    protected String id;
+    protected final String manufacturer = null;
 
-    private double speed;
-    private double altitude;
+    protected static final int speedConst = 100; // konstanta, ktorou delim rychlost
+    private final double averageSpeed = 0;
 
-    private Airport start;
-    private Airport destination;
+    private final double cruisingSpeed = 0;
 
-    private String startTime;
-    private String arrivalTime;
+    protected double speed = 0;
+    protected double acceleration = 0;
 
-    private FlightPath flightPath;
+    private final int maxAltitude = 0;
+    protected int altitude = 0;
+    protected int rateOfClimb = 0;
 
-    private boolean flying;
+    protected Airport start;
+    protected Airport destination;
+
+    protected FlightPath flightPath;
+
+    protected boolean flying;
 
     public Plane(String type, String airline, String id) {
         this.type = type;
         this.airline = airline;
         this.id = id;
-
-        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("kk:mm");
-        this.startTime = LocalTime.now().format(timeFormat);
-        this.arrivalTime = LocalTime.now().plusHours(1).format(timeFormat);
     }
-    //private FlyPath flyPath;
 
     public String getType() {
         return type;
@@ -57,11 +58,11 @@ public abstract class Plane implements Serializable {
     }
 
     public StringProperty getArrivalInfo() {
-        return new SimpleStringProperty(id + " | " + airline + " | " + arrivalTime + " | " + start.getName());
+        return new SimpleStringProperty(id + " | " + airline + " | " + flightPath.getArrivalTime() + " | " + start.getName());
     }
 
     public StringProperty getDepartureInfo() {
-        return new SimpleStringProperty(id + " | " + airline + " | " + startTime + " | " + destination.getName());
+        return new SimpleStringProperty(id + " | " + airline + " | " + flightPath.getStartTime() + " | " + destination.getName());
     }
 
     public String getId() {
@@ -70,31 +71,17 @@ public abstract class Plane implements Serializable {
 
     public StringProperty getIdProperty() { return new SimpleStringProperty(id); }
 
-    public boolean getStatus() { return this.flying; }
-
-    public void updateAirport() { this.start.updatePlane(this); }
-
     public double getSpeed() {
         return speed;
     }
 
-    public void increaseSpeed(double speed) {
-        this.speed += speed;
-    }
-
-    public void decreaseSpeed(double speed) {
-        this.speed -= speed;
-    }
+    public double getCruisingSpeed() { return cruisingSpeed; }
 
     public double getAltitude() {
         return altitude;
     }
 
-    public void ascend(double altitude) {
-        this.altitude += altitude;
-    }
-
-    public void descend(double altitude) { this.altitude -= altitude; }
+    public int getMaxAltitude() { return maxAltitude; }
 
     public Airport getStart() {
         return start;
@@ -114,30 +101,56 @@ public abstract class Plane implements Serializable {
         destination.addArrival(this);
     }
 
-    public String getStartTime() {
-        return startTime;
-    }
+    public boolean getStatus() { return flying; }
 
-    public String getArrivalTime() {
-        return arrivalTime;
-    }
+    public String getStartTime() { return flightPath.getStartTime(); }
+
+    public String getArrivalTime() { return flightPath.getArrivalTime(); }
 
     public FlightPath getFlightPath() {
         return flightPath;
     }
 
+    public void contactAirport() { start.updatePlane(this); }
+
+    public void fly() {
+        flightPath.updatePosition(speed/speedConst);
+        speed += acceleration;
+        altitude += (rateOfClimb/60); // /60 aby som to prisposobil na sekundy
+    }
+
     public void takeoff() {
         System.out.println("Plane id: " + this.id + " took off from " + this.start.getName());
-        this.flightPath = new FlightPath(start.getLocation(), destination.getLocation());
-        this.flying = true;
+        flightPath = new FlightPath(start.getLocation(), destination.getLocation(), averageSpeed);
+        flying = true;
     }
 
     public void land() {
         System.out.println("Plane id: " + this.id + " is landing in " + this.destination.getName());
-        this.flightPath = null;
-        this.flying = false;
+        flightPath = null;
+        flying = false;
         destination.removeArrival(this);
         start.removeDeparture(this);
     }
 
+    public void setRateOfClimb(int rateOfClimb) { this.rateOfClimb = rateOfClimb; }
+
+    public void setAcceleration(int acceleration) {
+        this.acceleration = acceleration;
+    }
+
+    public void startAscend() {
+        this.acceleration = 0; // zrychlenie pri stupani
+        this.rateOfClimb = 0; // velkost stupania
+    }
+
+    public void startCruising() {
+        this.acceleration = 0;
+        this.rateOfClimb = 0;
+    }
+
+    public void startDescend() {
+        this.acceleration = 0; // zrychlenie pri klesani
+        this.rateOfClimb = 0; // velkost klesania
+    }
 }
