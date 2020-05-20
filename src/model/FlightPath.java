@@ -43,12 +43,13 @@ public class FlightPath implements Serializable {
 
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("kk:mm");
         this.startTime = LocalTime.now().format(timeFormat);
-        System.out.println(this.averageSpeed);
+        //System.out.println(this.averageSpeed);
         long time = (long) (this.lenght/this.averageSpeed);
-        //System.out.println(time);
+        System.out.println(lenght);
 
         // keby som chcel cas, za aky to bude trvat naozaj, tak staci dat .plusSeconds(time)
-        this.arrivalTime = LocalTime.now().plusMinutes(time).format(timeFormat);
+        //this.arrivalTime = LocalTime.now().plusMinutes(time).format(timeFormat);
+        this.arrivalTime = LocalTime.now().plusSeconds(time).format(timeFormat);
     }
 
     public String getStartTime() {
@@ -68,12 +69,12 @@ public class FlightPath implements Serializable {
     public double getCompleted() {
         completed = travelled/lenght;
         completed *= 100;
-        //System.out.println(completed);
+        //System.out.println("presiel: " + travelled);
         return Math.ceil(completed);
     }
 
     public void updatePosition(double speed) {
         travelled += speed;
-        //System.out.println(travelled);
+        //System.out.println(speed);
     }
 }

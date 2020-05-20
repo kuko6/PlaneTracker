@@ -3,6 +3,7 @@ package controller;
 import controller.abstracts.Serialization;
 import javafx.scene.layout.AnchorPane;
 import model.Airport;
+import model.planes.Airbus;
 import model.planes.Plane;
 
 import java.util.ArrayList;
@@ -35,6 +36,13 @@ public class AirTraffic extends Serialization implements Runnable {
                 //plane.getFlightPath().updatePosition(30);
                 plane.fly();
                 plane.contactAirport();
+                /*
+                if (plane instanceof Airbus) {
+                    System.out.println(plane.getId());
+                    System.out.println("presiel: " + plane.getFlightPath().getTravelled() + " rychlost: " + plane.getSpeed());
+                }
+                System.out.println();
+                 */
                 //System.out.println(tmpPlanes.size() + " " + planes.size());
                 if (!plane.getStatus()) {
                     planes.remove(plane);

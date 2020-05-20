@@ -6,6 +6,7 @@ import model.Airport;
 import model.FlightPath;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -19,10 +20,10 @@ public abstract class Plane implements Serializable {
     protected static final int speedConst = 100; // konstanta, ktorou delim rychlost
     private final double averageSpeed = 0;
 
-    private final double cruisingSpeed = 0;
+    private final int cruisingSpeed = 0;
 
     protected double speed = 0;
-    protected double acceleration = 0;
+    protected int acceleration = 0;
 
     private final int maxAltitude = 0;
     protected int altitude = 0;
@@ -32,6 +33,7 @@ public abstract class Plane implements Serializable {
     protected Airport destination;
 
     protected FlightPath flightPath;
+    protected double timeOfDescend = 100;
 
     protected boolean flying;
 
@@ -75,26 +77,22 @@ public abstract class Plane implements Serializable {
         return speed;
     }
 
-    public double getCruisingSpeed() { return cruisingSpeed; }
+    public int getCruisingSpeed() { return cruisingSpeed; }
 
-    public double getAltitude() {
-        return altitude;
-    }
+    public int getAcceleration() { return acceleration; }
+
+    public int getAltitude() { return altitude; }
 
     public int getMaxAltitude() { return maxAltitude; }
 
-    public Airport getStart() {
-        return start;
-    }
+    public Airport getStart() { return start; }
 
     public void setStart(Airport start) {
         this.start = start;
         start.addDeparture(this);
     }
 
-    public Airport getDestination() {
-        return destination;
-    }
+    public Airport getDestination() { return destination; }
 
     public void setDestination(Airport destination) {
         this.destination = destination;
@@ -107,8 +105,14 @@ public abstract class Plane implements Serializable {
 
     public String getArrivalTime() { return flightPath.getArrivalTime(); }
 
-    public FlightPath getFlightPath() {
-        return flightPath;
+    public FlightPath getFlightPath() { return flightPath; }
+
+    public double getTimeOfDescend() { return timeOfDescend; }
+
+    public void setTimeOfDescend() {
+        timeOfDescend = flightPath.getLenght() - flightPath.getTravelled();
+        System.out.println(id);
+        System.out.println("klesam na: " + timeOfDescend);
     }
 
     public void contactAirport() { start.updatePlane(this); }
@@ -116,7 +120,7 @@ public abstract class Plane implements Serializable {
     public void fly() {
         flightPath.updatePosition(speed/speedConst);
         speed += acceleration;
-        altitude += (rateOfClimb/60); // /60 aby som to prisposobil na sekundy
+        altitude += rateOfClimb;
     }
 
     public void takeoff() {
@@ -135,21 +139,19 @@ public abstract class Plane implements Serializable {
 
     public void setRateOfClimb(int rateOfClimb) { this.rateOfClimb = rateOfClimb; }
 
-    public void setAcceleration(int acceleration) {
-        this.acceleration = acceleration;
-    }
+    public void setAcceleration(int acceleration) { this.acceleration = acceleration; }
 
-    public void startAscend() {
+    public void ascend() {
         this.acceleration = 0; // zrychlenie pri stupani
         this.rateOfClimb = 0; // velkost stupania
     }
 
-    public void startCruising() {
+    public void cruise() {
         this.acceleration = 0;
         this.rateOfClimb = 0;
     }
 
-    public void startDescend() {
+    public void descend() {
         this.acceleration = 0; // zrychlenie pri klesani
         this.rateOfClimb = 0; // velkost klesania
     }

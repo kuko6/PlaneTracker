@@ -65,21 +65,18 @@ public class Airport implements Serializable {
 
     public void updatePlane(Plane plane) {
         //System.out.println(plane.getMaxAltitude() + " " + plane.getCruisingSpeed());
-        if (plane.getFlightPath().getCompleted() >= 50) {
-            plane.startDescend();
-        } else if (plane.getAltitude() == plane.getMaxAltitude() || plane.getSpeed() == plane.getCruisingSpeed()) {
-            plane.startCruising();
+
+       if (plane.getFlightPath().getTravelled() >= plane.getTimeOfDescend()) {
+            plane.descend();
+        } else if (plane.getAltitude() >= plane.getMaxAltitude() || plane.getSpeed() >= plane.getCruisingSpeed() || plane.getFlightPath().getCompleted() == 50) {
+           if (plane.getAcceleration() > 0) {
+               plane.setTimeOfDescend();
+               //System.out.println(plane.getFlightPath().getTravelled());
+           }
+            plane.cruise();
         }
-        /*
-        int i = -1;
-        if (this.departures.contains(plane)) {
-            i = this.departures.indexOf(plane);
-        } else if (this.arrivals.contains(plane)) {
-            i = this.arrivals.indexOf(plane);
-        }
-        System.out.println(this.departures.get(i).getFlightPath().getCompleted());
-         */
-        if (plane.getFlightPath().getCompleted() >= 100) {
+
+        if (plane.getFlightPath().getCompleted() >= 100 || plane.getSpeed() < 0) {
             plane.land();
         }
         //System.out.println(this.departures.contains(plane));
