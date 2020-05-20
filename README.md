@@ -27,8 +27,8 @@ jednoduchý **polymorfizmus** sa nachádza v triede `PlaneInfoController`, kde s
 - [x] vedieť zobraziť všetky lietadlá
 - [x] vedieť zobraziť informácie o lietadle
 - [x] vedieť pridať lietadlo
-- [ ] simulácia letu lietadla
+- [x] simulácia letu lietadla
 - [ ] vedieť zobraziť lietadlo a jeho dráhu na mape
-- [ ] registrácia rôznych používateľov
+- [x] registrácia nových používateľov
 - [ ] vedieť vygenerovať textový súbor s informáciami o lietadle/letisku
 - [ ] ošetriť výnimnky
