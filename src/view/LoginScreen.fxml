@@ -43,9 +43,8 @@
                         <TextField fx:id="username" maxHeight="27.0" maxWidth="-Infinity" prefHeight="27.0" prefWidth="135.0" text="user" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                         <PasswordField fx:id="password" maxHeight="27.0" maxWidth="-Infinity" prefHeight="27.0" prefWidth="135.0" text="1234" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                         <Button fx:id="login" maxWidth="-Infinity" mnemonicParsing="false" prefWidth="135.0" text="login" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                         <!--
-                        <Button maxHeight="27.0" maxWidth="100.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="register" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <Button maxWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="spectate" GridPane.columnIndex="1" GridPane.rowIndex="7" /> -->
+                        <Button fx:id="register" maxHeight="27.0" maxWidth="100.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="register" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                         <!-- <Button maxWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="spectate" GridPane.columnIndex="1" GridPane.rowIndex="7" /> -->
                      </children>
                   </GridPane>
                </children>

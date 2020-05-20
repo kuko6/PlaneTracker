@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import model.Airport;
 import model.planes.Plane;
@@ -60,6 +61,12 @@ public class AirportInfoController implements Controller {
         departuresTable.setItems(departuresList);
     }
 
+    private void drawLine(Plane plane) {
+        Line line = new Line(plane.getFlightPath().getStartX(), plane.getFlightPath().getStartY(), plane.getFlightPath().getDestinationX(), plane.getFlightPath().getDestinationY());
+        line.setOpacity(0.9);
+        currentScene.getChildren().add(line);
+    }
+
     // po dvojkliku na lietadlo z tabulky, zobrazi novu tabulku s informaciami o konkretnom lietadle
     private void showPlaneInfo(TableView<Plane> table) {
         table.setOnMouseClicked(e -> {
@@ -79,6 +86,7 @@ public class AirportInfoController implements Controller {
 
                     PlaneInfoController controller = loader.getController();
                     controller.loadSelectedPlane(selectedPlane);
+                    drawLine(selectedPlane);
                     currentScene.getChildren().add(newScene);
 
                 } catch (IOException ex) {

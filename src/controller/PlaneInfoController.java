@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Line;
 import model.planes.Plane;
 
 import java.util.Timer;
@@ -127,7 +128,14 @@ public class PlaneInfoController extends Serialization implements Controller {
         showInfoBoard();
     }
 
+    private void drawLine() {
+        Line line = new Line(plane.getFlightPath().getStartX(), plane.getFlightPath().getStartY(), plane.getFlightPath().getDestinationX(), plane.getFlightPath().getDestinationY());
+        line.setOpacity(0.9);
+        this.currentScene.getChildren().add(line);
+    }
+
     private void showInfoBoard() {
+        //drawLine();
         manufacturer.setText(plane.getManufacturer());
         type.setText(plane.getType());
         id.setText(plane.getId());

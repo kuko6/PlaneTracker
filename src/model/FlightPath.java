@@ -5,12 +5,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class FlightPath implements Serializable {
-    /*
     private double startX;
     private double startY;
     private double destinationX;
     private double destinationY;
-     */
 
     double[] start;
     double[] destination;
@@ -25,12 +23,11 @@ public class FlightPath implements Serializable {
     private String arrivalTime;
 
     public FlightPath(double[] start, double[] destination, double averageSpeed) {
-        /*
         this.startX = start[0];
         this.startY = start[1];
         this.destinationX = destination[0];
         this.destinationY = destination[1];
-         */
+
         this.averageSpeed = averageSpeed;
 
         this.start = start;
@@ -48,8 +45,8 @@ public class FlightPath implements Serializable {
         System.out.println(lenght);
 
         // keby som chcel cas, za aky to bude trvat naozaj, tak staci dat .plusSeconds(time)
-        //this.arrivalTime = LocalTime.now().plusMinutes(time).format(timeFormat);
-        this.arrivalTime = LocalTime.now().plusSeconds(time).format(timeFormat);
+        this.arrivalTime = LocalTime.now().plusMinutes(time).format(timeFormat);
+        //this.arrivalTime = LocalTime.now().plusSeconds(time).format(timeFormat);
     }
 
     public String getStartTime() {
@@ -62,6 +59,22 @@ public class FlightPath implements Serializable {
 
     public double getLenght() {
         return lenght;
+    }
+
+    public double getStartX() {
+        return startX;
+    }
+
+    public double getStartY() {
+        return startY;
+    }
+
+    public double getDestinationX() {
+        return destinationX;
+    }
+
+    public double getDestinationY() {
+        return destinationY;
     }
 
     public double getTravelled() { return travelled; }
