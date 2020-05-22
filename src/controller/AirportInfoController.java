@@ -1,12 +1,14 @@
 package controller;
 
 import controller.abstracts.Controller;
+import controller.abstracts.PlaneInfo;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -19,7 +21,7 @@ import model.planes.Plane;
 
 import java.io.*;
 
-public class AirportInfoController implements Controller {
+public class AirportInfoController implements Controller, PlaneInfo {
 
     @FXML
     private AnchorPane currentScene;
@@ -42,7 +44,7 @@ public class AirportInfoController implements Controller {
     private Airport airport; // zvolene letisko
     private ObservableList<Plane> arrivalsList = FXCollections.observableArrayList();
     private ObservableList<Plane> departuresList = FXCollections.observableArrayList();
-
+    private Node[] nodes;
 
     public void loadSelectedAirport(Airport airport) {
         this.airport = airport;
@@ -59,41 +61,6 @@ public class AirportInfoController implements Controller {
 
         arrivalsTable.setItems(arrivalsList);
         departuresTable.setItems(departuresList);
-    }
-
-    private void drawLine(Plane plane) {
-        Line line = new Line(plane.getFlightPath().getStartX(), plane.getFlightPath().getStartY(), plane.getFlightPath().getDestinationX(), plane.getFlightPath().getDestinationY());
-        line.setOpacity(0.9);
-        currentScene.getChildren().add(line);
-    }
-
-    // po dvojkliku na lietadlo z tabulky, zobrazi novu tabulku s informaciami o konkretnom lietadle
-    private void showPlaneInfo(TableView<Plane> table) {
-        table.setOnMouseClicked(e -> {
-            if (e.getClickCount() == 2) {
-                Plane selectedPlane = table.getSelectionModel().getSelectedItem();
-                if (selectedPlane == null) { // ked je tabulka prazdna
-                    System.out.println("nothing to click on :(");
-                    return;
-                }
-                currentScene.getChildren().remove(arrivalsTable);
-                currentScene.getChildren().remove(departuresTable);
-                currentScene.getChildren().remove(add);
-
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/PlaneInfo.fxml"));
-                    AnchorPane newScene = loader.load();
-
-                    PlaneInfoController controller = loader.getController();
-                    controller.loadSelectedPlane(selectedPlane);
-                    drawLine(selectedPlane);
-                    currentScene.getChildren().add(newScene);
-
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
     }
 
     // zobrazi dialogove okno, v ktorom sa daju pridavat lietadla
@@ -121,12 +88,12 @@ public class AirportInfoController implements Controller {
 
     @Override
     public void initialize() {
-        // schova timeTable TableView
+        nodes = new Node[] {add, arrivalsTable, departuresTable};
         currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
         add.setOnAction(e -> showAddDialog());
         Platform.runLater(() -> {
-            showPlaneInfo(arrivalsTable);
-            showPlaneInfo(departuresTable);
+            showPlaneInfo(arrivalsTable, currentScene, nodes);
+            showPlaneInfo(departuresTable, currentScene, nodes);
             showTimetable();
         });
     }

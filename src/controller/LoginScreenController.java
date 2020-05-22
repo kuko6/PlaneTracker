@@ -1,6 +1,7 @@
 package controller;
 
 import controller.abstracts.Controller;
+import controller.abstracts.Serialization;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,16 +13,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.User;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Objects;
 
-
-public class LoginScreenController implements Controller {
+public class LoginScreenController extends Serialization implements Controller {
 
     @FXML
     private AnchorPane currentScene;
@@ -38,21 +32,6 @@ public class LoginScreenController implements Controller {
     @FXML
     private TextField username;
 
-    private ArrayList<User> users = new ArrayList<>();
-
-    public void loadUsers() {
-        try {
-            Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
-            String p = path.toString() + "/data/users.txt";
-            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(p));
-            users = (ArrayList<User>) objectInputStream.readObject();
-            objectInputStream.close();
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void showErrorDialog() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -67,6 +46,7 @@ public class LoginScreenController implements Controller {
         for (User user : users) {
             if (username.getText().equals(user.getUsername())) {
                 if (password.getText().equals(user.getPassword())) {
+                    System.out.println("Logged in as " + user.getUsername() + "\n");
                     this.switchScene(currentScene, "Map");
                     return;
                 }
@@ -107,6 +87,7 @@ public class LoginScreenController implements Controller {
     public void initialize() {
         //login.defaultButtonProperty().bind(login.focusedProperty());
         loadUsers();
+        System.out.println("Registered users: ");
         for (User user : users) {
             System.out.println(user.getUsername());
         }

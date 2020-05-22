@@ -1,6 +1,7 @@
 package controller;
 
 import controller.abstracts.Controller;
+import controller.abstracts.Serialization;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -16,7 +17,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class RegisterController implements Controller {
+public class RegisterController extends Serialization implements Controller {
 
     @FXML
     private AnchorPane currentScene;
@@ -36,37 +37,8 @@ public class RegisterController implements Controller {
     @FXML
     private Stage dialogStage; // dialogove okno, ktore je na obrazovke
 
-    private ArrayList<User> users = new ArrayList<>();
-
     public void setDialogStage(Stage stage) {
         this.dialogStage = stage;
-    }
-
-    public void loadUsers() {
-        try {
-            Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
-            String p = path.toString() + "/data/users.txt";
-            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(p));
-            users = (ArrayList<User>) objectInputStream.readObject();
-            objectInputStream.close();
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void saveUser() {
-        try {
-            Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
-            String p = path.toString() + "/data/users.txt";
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(p));
-            objectOutputStream.writeObject(users);
-            objectOutputStream.flush();
-            objectOutputStream.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void showErrorDialog(String error) {
@@ -82,9 +54,10 @@ public class RegisterController implements Controller {
 
         if (error.equals("Password")) {
             this.password.clear();
-        } else if (error.contains("Username")) {
-            this.username.clear();
+            return;
         }
+        this.username.clear();
+        this.password.clear();
     }
 
     private void addUser() {
@@ -119,7 +92,7 @@ public class RegisterController implements Controller {
     // zavrie dialogove okno a vrati sa na hlavnu obrazovku
     private void closeDialog() {
         this.dialogStage.close();
-        switchScene(currentScene, "LoginScreen");
+        //switchScene(currentScene, "LoginScreen");
     }
 
     @Override

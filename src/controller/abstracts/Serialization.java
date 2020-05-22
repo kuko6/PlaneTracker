@@ -1,6 +1,7 @@
 package controller.abstracts;
 
 import model.Airport;
+import model.User;
 import model.planes.Plane;
 
 import java.io.*;
@@ -12,6 +13,7 @@ public abstract class Serialization {
 
     public ArrayList<Airport> airports = new ArrayList<>();
     public ArrayList<Plane> planes = new ArrayList<>();
+    public ArrayList<User> users = new ArrayList<>();
 
     // toto asi nie je najlepsie riesenie, ale funguje to xd
     // problem bol, ze pri serializacii a potom deserializacii sa menia referencie na objekty
@@ -83,6 +85,34 @@ public abstract class Serialization {
             objectInputStream.close();
 
         } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadUsers() {
+        try {
+            Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
+            String p = path.toString() + "/data/users.txt";
+            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(p));
+            users = (ArrayList<User>) objectInputStream.readObject();
+            objectInputStream.close();
+
+        } catch (IOException | ClassNotFoundException e) {
+            //System.out.println("Prazdny zoznam :(");
+            e.printStackTrace();
+        }
+    }
+
+    public void saveUser() {
+        try {
+            Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
+            String p = path.toString() + "/data/users.txt";
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(p));
+            objectOutputStream.writeObject(users);
+            objectOutputStream.flush();
+            objectOutputStream.close();
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

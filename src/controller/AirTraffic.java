@@ -24,16 +24,11 @@ public class AirTraffic extends Serialization implements Runnable {
 
     @Override
     public void run() {
-        //Rectangle rectangle = new Rectangle(500, 200, 50, 50);
-        //currentScene.getChildren().add(rectangle);
-        //Plane plane = planes.get(0);
-        //Plane plane;
         while (true) {
             loadAirports();
             loadPlanes();
-            tmpPlanes = new ArrayList<Plane>(planes); // takto, lebo menim list pocas toho ako o prechadzam
+            tmpPlanes = new ArrayList<Plane>(planes); // takto, lebo menim list pocas toho ako ho prechadzam
             for (Plane plane : tmpPlanes) {
-                //plane.getFlightPath().updatePosition(30);
                 plane.fly();
                 plane.contactAirport();
                 /*
@@ -43,7 +38,6 @@ public class AirTraffic extends Serialization implements Runnable {
                 }
                 System.out.println();
                  */
-                //System.out.println(tmpPlanes.size() + " " + planes.size());
                 if (!plane.getStatus()) {
                     planes.remove(plane);
                 }
@@ -59,10 +53,7 @@ public class AirTraffic extends Serialization implements Runnable {
                 Thread.currentThread().interrupt();
                 break;
             }
-            //System.out.println(i);
-            //i++;
 
-            //rectangle.setX(rectangle.getX() + 5);
             try {
                 Thread.sleep(1000); // opakuje sa kazdu sekundu
             } catch (InterruptedException e) {

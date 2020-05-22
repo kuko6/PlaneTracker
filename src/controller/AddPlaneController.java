@@ -137,7 +137,7 @@ public class AddPlaneController extends Serialization implements Controller {
     // zavrie dialogove okno a vrati sa na hlavnu obrazovku
     private void closeDialog() {
         this.dialogStage.close();
-        switchScene(currentScene, "Map");
+        //switchScene(currentScene, "Map");
     }
 
     @Override

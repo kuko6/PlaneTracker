@@ -150,6 +150,7 @@ public class MapController extends Serialization implements Controller {
 
         planeList.setOnAction(e -> showPlaneList());
         logout.setOnAction(e -> {
+            System.out.println("Logged out\n");
             switchScene(currentScene ,"LoginScreen");
             Main.counter = 0;
         });
