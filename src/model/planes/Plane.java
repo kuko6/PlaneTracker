@@ -5,10 +5,9 @@ import javafx.beans.property.StringProperty;
 import model.Airport;
 import model.FlightPath;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.text.DecimalFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 public abstract class Plane implements Serializable {
 
@@ -42,6 +41,11 @@ public abstract class Plane implements Serializable {
         this.airline = airline;
         this.id = id;
     }
+    /*
+    private synchronized void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+    }
+    */
 
     public String getType() {
         return type;

@@ -67,33 +67,17 @@ public class PlaneInfoController extends Serialization implements Controller {
     public void loadSelectedPlane(Plane plane) {
         this.plane = plane;
     }
-
-    /*
-    private void fn() {
-        Timer t = new Timer();
-        t.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                refresh();
-                System.out.println("tu som");
-            }
-        }, 0, 2000);
-
-        currentScene.setOnMouseClicked(e -> {
-            switchScene(currentScene, "Map");
-            t.cancel();
-        });
-    }
-     */
-
-    /*
+    
     private void fn() {
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
         exec.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                System.out.println("tu som");
+                //System.out.println("tu som");
 
+                loadAirports();
+                loadPlanes();
+                //System.out.println(planes.get(0).getFlightPath().getCompleted());
                 refresh();
 
                 currentScene.setOnMouseClicked(e -> {
@@ -101,13 +85,12 @@ public class PlaneInfoController extends Serialization implements Controller {
                     exec.shutdownNow();
                 });
             }
-        }, 0, 2, TimeUnit.SECONDS);
+        }, 0, 1, TimeUnit.SECONDS);
     }
-     */
 
     private void refresh() {
-        loadAirports();
-        loadPlanes();
+        //loadAirports();
+        //loadPlanes();
         //System.out.println(plane.getId());
 
         boolean landed = true;
@@ -125,7 +108,7 @@ public class PlaneInfoController extends Serialization implements Controller {
             return;
         }
 
-        showInfoBoard();
+        Platform.runLater(this::showInfoBoard);
     }
 
     private void drawLine() {
@@ -153,8 +136,8 @@ public class PlaneInfoController extends Serialization implements Controller {
     public void initialize() {
         currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
         ref.setOnAction(e -> refresh());
-        Platform.runLater(() -> showInfoBoard());
-
+        //Platform.runLater(() -> showInfoBoard());
+        fn();
         //Platform.runLater(() -> fn());
     }
 }

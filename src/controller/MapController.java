@@ -27,12 +27,8 @@ public class MapController extends Serialization implements Controller {
     @FXML
     private Button planeList;
 
-    public MapController() {
-        super();
-    }
-
     // nastavi vsetky buttony(letiska)
-    private void initializeAirports() {
+    private synchronized void initializeAirports() {
         int i = 0;
         // prechadza vsetky deti sceny a hlada buttony, ktore reprezentuju letiska
         for (Node n : currentScene.getChildren()) {
@@ -54,7 +50,7 @@ public class MapController extends Serialization implements Controller {
         }
     }
 
-    private void initializePlanes() {
+    private synchronized void initializePlanes() {
         // na zaciatku programu sa vytvori par lietadiel a ulozia sa do ArrayList lietadla
         if (Main.counter == 0) {
             Plane plane1 = new Airbus("A321", "Flyyyy", "1234");
@@ -133,6 +129,8 @@ public class MapController extends Serialization implements Controller {
     public void initialize() {
         initializeAirports();
         initializePlanes();
+
+        //System.out.println("|tu|");
 
         if (Main.counter == 0) {
             Thread airTrafic = new Thread(new AirTraffic(currentScene, airports, planes));

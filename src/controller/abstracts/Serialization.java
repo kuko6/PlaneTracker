@@ -18,7 +18,7 @@ public abstract class Serialization {
     // toto asi nie je najlepsie riesenie, ale funguje to xd
     // problem bol, ze pri serializacii a potom deserializacii sa menia referencie na objekty
     // takze napriklad, ked je start lietadla v airport1 nie je to to iste letisko ako airport1 ulozene v airports
-    public void repairReferences() {
+    public synchronized void repairReferences() {
         String airportName;
         int airportIndex;
         for (Plane plane : planes) {
@@ -34,7 +34,7 @@ public abstract class Serialization {
         }
     }
 
-    public void saveAirports() {
+    public synchronized void saveAirports() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
             String p = path.toString() + "/data/airports.txt";
@@ -48,7 +48,7 @@ public abstract class Serialization {
         }
     }
 
-    public void loadAirports() {
+    public synchronized void loadAirports() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
             String p = path.toString() + "/data/airports.txt";
@@ -57,11 +57,12 @@ public abstract class Serialization {
             objectInputStream.close();
 
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println("ouch");
         }
     }
 
-    public void savePlanes() {
+    public synchronized void savePlanes() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
             String p = path.toString() + "/data/currentPlanes.txt";
@@ -75,7 +76,7 @@ public abstract class Serialization {
         }
     }
 
-    public void loadPlanes() {
+    public synchronized void loadPlanes() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
             String p = path.toString() + "/data/currentPlanes.txt";

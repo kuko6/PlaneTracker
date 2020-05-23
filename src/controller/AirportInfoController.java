@@ -79,7 +79,7 @@ public class AirportInfoController implements Controller, PlaneInfo {
             addDialog.setScene(scene);
             addDialog.showAndWait(); // okno bude na obrazovke, az pokial ho pouzivatel nezrusi
 
-            switchScene(currentScene, "Map");
+            //switchScene(currentScene, "Map");
 
         } catch (IOException ex) {
             ex.printStackTrace();
