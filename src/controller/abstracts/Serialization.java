@@ -57,8 +57,8 @@ public abstract class Serialization {
             objectInputStream.close();
 
         } catch (IOException | ClassNotFoundException e) {
-            //e.printStackTrace();
-            System.out.println("ouch");
+            e.printStackTrace();
+            //System.out.println("ouch");
         }
     }
 

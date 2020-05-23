@@ -3,17 +3,18 @@ package controller;
 import controller.abstracts.Controller;
 import controller.abstracts.Serialization;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Line;
 import model.planes.Plane;
+import view.PlaneRender;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -63,27 +64,21 @@ public class PlaneInfoController extends Serialization implements Controller {
     private Button ref;
 
     private Plane plane; // zvolene lietadlo
+    private PlaneRender planeRender = new PlaneRender();
+    ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
 
     public void loadSelectedPlane(Plane plane) {
         this.plane = plane;
     }
-    
-    private void fn() {
-        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+
+    private void update() {
         exec.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                //System.out.println("tu som");
-
                 loadAirports();
                 loadPlanes();
-                //System.out.println(planes.get(0).getFlightPath().getCompleted());
-                refresh();
 
-                currentScene.setOnMouseClicked(e -> {
-                    switchScene(currentScene, "Map");
-                    exec.shutdownNow();
-                });
+                refresh();
             }
         }, 0, 1, TimeUnit.SECONDS);
     }
@@ -108,13 +103,10 @@ public class PlaneInfoController extends Serialization implements Controller {
             return;
         }
 
-        Platform.runLater(this::showInfoBoard);
-    }
-
-    private void drawLine() {
-        Line line = new Line(plane.getFlightPath().getStartX(), plane.getFlightPath().getStartY(), plane.getFlightPath().getDestinationX(), plane.getFlightPath().getDestinationY());
-        line.setOpacity(0.9);
-        this.currentScene.getChildren().add(line);
+        Platform.runLater(() -> {
+            showInfoBoard();
+            planeRender.highlightCompleted(plane.getFlightPath(), currentScene);
+        });
     }
 
     private void showInfoBoard() {
@@ -127,17 +119,22 @@ public class PlaneInfoController extends Serialization implements Controller {
         startTime.setText(plane.getStartTime());
         destination.setText(plane.getDestination().getName());
         arrivalTime.setText(plane.getArrivalTime());
-        completed.setText(plane.getFlightPath().getCompleted() + "%");
+
+        completed.setText(String.format("%.2f", plane.getFlightPath().getCompleted()) + "%");
         altitude.setText(plane.getAltitude() + " ft");
         speed.setText(plane.getSpeed() + " kts");
     }
 
     @Override
     public void initialize() {
-        currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
+        currentScene.setOnMouseClicked(e -> {
+            //System.out.println(e.getClickCount());
+            switchScene(currentScene, "Map");
+            exec.shutdownNow();
+        });
+
         ref.setOnAction(e -> refresh());
         //Platform.runLater(() -> showInfoBoard());
-        fn();
-        //Platform.runLater(() -> fn());
+        update();
     }
 }

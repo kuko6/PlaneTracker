@@ -5,18 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Line;
 import model.planes.Plane;
+import view.PlaneRender;
 
 import java.io.IOException;
 
 public interface PlaneInfo {
-
-    default void drawLine(Plane plane, AnchorPane currentScene) {
-        Line line = new Line(plane.getFlightPath().getStartX(), plane.getFlightPath().getStartY(), plane.getFlightPath().getDestinationX(), plane.getFlightPath().getDestinationY());
-        line.setOpacity(0.9);
-        currentScene.getChildren().add(line);
-    }
+    PlaneRender renderer = new PlaneRender();
 
     default void showPlaneInfo(TableView<Plane> table, AnchorPane currentScene, Node[] nodes) {
         table.setOnMouseClicked(e -> {
@@ -37,7 +32,7 @@ public interface PlaneInfo {
 
                     PlaneInfoController controller = loader.getController();
                     controller.loadSelectedPlane(selectedPlane);
-                    drawLine(selectedPlane, currentScene);
+                    renderer.drawFlightPath(selectedPlane, currentScene);
                     currentScene.getChildren().add(newScene);
 
                 } catch (IOException ex) {
@@ -46,4 +41,20 @@ public interface PlaneInfo {
             }
         });
     }
+
+    default void showPlaneInfo(Plane selectedPlane, AnchorPane currentScene) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/PlaneInfo.fxml"));
+            AnchorPane newScene = loader.load();
+
+            PlaneInfoController controller = loader.getController();
+            controller.loadSelectedPlane(selectedPlane);
+            renderer.drawFlightPath(selectedPlane, currentScene);
+            currentScene.getChildren().add(newScene);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }

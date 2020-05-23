@@ -1,36 +1,81 @@
 package controller;
 
+import controller.abstracts.PlaneInfo;
 import controller.abstracts.Serialization;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Line;
 import model.Airport;
-import model.planes.Airbus;
 import model.planes.Plane;
+import view.PlaneRender;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class AirTraffic extends Serialization implements Runnable {
+public class AirTraffic extends Serialization implements Runnable, PlaneInfo {
 
-    private int i = 0;
     AnchorPane currentScene;
     ArrayList<Plane> tmpPlanes;
+    ArrayList<Node> images = new ArrayList<>();
+    PlaneRender planeRender = new PlaneRender();
 
     public AirTraffic(AnchorPane currentScene, ArrayList<Airport> airports, ArrayList<Plane> planes) {
         super();
-        System.out.println("zacinam");
+        //System.out.println("zacinam");
         this.airports = airports;
         this.planes = planes;
         this.currentScene = currentScene;
     }
 
+    private void clean() {
+        //currentScene.getChildren().removeIf(node -> node instanceof Polygon);
+        //currentScene.getChildren().removeIf(node -> node instanceof ImageView && node.getId().equals("plane"));
+        /*
+        for (Node node : currentScene.getChildren()) {
+            if (node.getId() != null && node instanceof ImageView) {
+                images.add(node);
+            }
+        }
+         */
+        currentScene.getChildren().removeAll(images);
+        images.clear();
+        //System.out.println(images.size());
+    }
+
     @Override
     public void run() {
         while (true) {
+            if (Main.counter == 0) { // toto teoreticky ani nebude treba
+                //System.out.println("koncim");
+                Thread.currentThread().interrupt();
+                clean();
+                break;
+            }
+
             loadAirports();
             loadPlanes();
             tmpPlanes = new ArrayList<Plane>(planes); // takto, lebo menim list pocas toho ako ho prechadzam
+            Platform.runLater(() -> clean());
+            int i = 0;
             for (Plane plane : tmpPlanes) {
                 plane.fly();
-                plane.contactAirport();
+                //plane.contactAirport();
+                int finalI = i;
+                i++;
+                Platform.runLater(() -> {
+                    images.add(planeRender.drawPlane(plane.getFlightPath(), currentScene));
+                    if (images.get(finalI) != null) {
+                        images.get(finalI).setOnMouseClicked(e -> {
+                            if (e.getClickCount() == 2) {
+                                //currentScene.getChildren().removeIf(node -> node instanceof Line); // vymaze ciary z predchadzajuceho lietadla
+                                showPlaneInfo(planes.get(finalI), currentScene);
+                            }
+                        });
+                    }
+                });
+
                 /*
                 if (plane instanceof Airbus) {
                     System.out.println(plane.getId());
@@ -38,8 +83,10 @@ public class AirTraffic extends Serialization implements Runnable {
                 }
                 System.out.println();
                  */
+                //System.out.println(planes.size());
                 if (!plane.getStatus()) {
                     planes.remove(plane);
+                    i--;
                 }
             }
             //System.out.println("Thread name="+Thread.currentThread().getName());
@@ -48,11 +95,6 @@ public class AirTraffic extends Serialization implements Runnable {
 
             saveAirports();
             savePlanes();
-            if (Main.counter == 0) { // toto teoreticky ani nebude treba
-                System.out.println("koncim");
-                Thread.currentThread().interrupt();
-                break;
-            }
 
             try {
                 Thread.sleep(1000); // opakuje sa kazdu sekundu
@@ -60,15 +102,5 @@ public class AirTraffic extends Serialization implements Runnable {
                 e.printStackTrace();
             }
         }
-
-        /*
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), e -> {
-            System.out.println(i);
-            i++;
-            rectangle.setX(rectangle.getX()+1);
-        }));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
-         */
     }
 }

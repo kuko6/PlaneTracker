@@ -30,8 +30,8 @@ public class Boeing extends Plane {
     public int getMaxAltitude() { return this.maxAltitude; }
 
     public void setTimeOfDescend() {
-        timeOfDescend = flightPath.getLenght() - flightPath.getTravelled();
-        timeOfDescend = timeOfDescend - 2*((double) cruisingSpeed/speedConst);
+        timeOfDescend = flightPath.getLength() - flightPath.getTravelled();
+        timeOfDescend = timeOfDescend - ((double) cruisingSpeed/speedConst);
         //timeOfDescend = timeOfDescend - maxAcceleration;
         System.out.println(id);
         System.out.println("klesam na: " + timeOfDescend);

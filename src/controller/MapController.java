@@ -12,6 +12,7 @@ import model.planes.Airbus;
 import model.planes.Boeing;
 import model.planes.Cessna;
 import model.planes.Plane;
+import view.PlaneRender;
 
 import java.io.*;
 import java.util.ArrayList;

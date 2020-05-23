@@ -24,11 +24,11 @@ public class Airport implements Serializable {
         this.location = location;
     }
 
-    /*
     private synchronized void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
     }
 
+    /*
     private synchronized void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
     }

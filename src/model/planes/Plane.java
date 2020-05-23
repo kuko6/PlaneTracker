@@ -18,10 +18,9 @@ public abstract class Plane implements Serializable {
 
     protected static final int speedConst = 100; // konstanta, ktorou delim rychlost
     private final double averageSpeed = 0;
-
     private final int cruisingSpeed = 0;
-
     protected double speed = 0;
+
     protected int acceleration = 0;
 
     private final int maxAltitude = 0;
@@ -41,11 +40,10 @@ public abstract class Plane implements Serializable {
         this.airline = airline;
         this.id = id;
     }
-    /*
+
     private synchronized void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
     }
-    */
 
     public String getType() {
         return type;
@@ -114,7 +112,7 @@ public abstract class Plane implements Serializable {
     public double getTimeOfDescend() { return timeOfDescend; }
 
     public void setTimeOfDescend() {
-        timeOfDescend = flightPath.getLenght() - flightPath.getTravelled();
+        timeOfDescend = flightPath.getLength() - flightPath.getTravelled();
         System.out.println(id);
         System.out.println("klesam na: " + timeOfDescend);
     }
@@ -125,6 +123,7 @@ public abstract class Plane implements Serializable {
         flightPath.updatePosition(speed/speedConst);
         speed += acceleration;
         altitude += rateOfClimb;
+        contactAirport();
     }
 
     public void takeoff() {
