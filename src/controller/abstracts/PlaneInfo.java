@@ -1,19 +1,20 @@
 package controller.abstracts;
 
 import controller.PlaneInfoController;
+import controller.helper.Storage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import model.planes.Plane;
-import view.PlaneRender;
+import view.PlaneRenderer;
 
 import java.io.IOException;
 
 public interface PlaneInfo {
-    PlaneRender renderer = new PlaneRender();
+    PlaneRenderer renderer = new PlaneRenderer();
 
-    default void showPlaneInfo(TableView<Plane> table, AnchorPane currentScene, Node[] nodes) {
+    default void showPlaneInfo(TableView<Plane> table, AnchorPane currentScene, Node[] nodes, Storage storage) {
         table.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2) {
                 Plane selectedPlane = table.getSelectionModel().getSelectedItem();
@@ -32,6 +33,7 @@ public interface PlaneInfo {
 
                     PlaneInfoController controller = loader.getController();
                     controller.loadSelectedPlane(selectedPlane);
+                    controller.loadHelper(storage);
                     renderer.drawFlightPath(selectedPlane, currentScene);
                     currentScene.getChildren().add(newScene);
 
@@ -42,12 +44,13 @@ public interface PlaneInfo {
         });
     }
 
-    default void showPlaneInfo(Plane selectedPlane, AnchorPane currentScene) {
+    default void showPlaneInfo(Plane selectedPlane, AnchorPane currentScene, Storage storage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/PlaneInfo.fxml"));
             AnchorPane newScene = loader.load();
 
             PlaneInfoController controller = loader.getController();
+            controller.loadHelper(storage);
             controller.loadSelectedPlane(selectedPlane);
             renderer.drawFlightPath(selectedPlane, currentScene);
             currentScene.getChildren().add(newScene);

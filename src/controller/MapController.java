@@ -1,7 +1,8 @@
 package controller;
 
 import controller.abstracts.Controller;
-import controller.abstracts.Serialization;
+import controller.helper.Storage;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -12,12 +13,11 @@ import model.planes.Airbus;
 import model.planes.Boeing;
 import model.planes.Cessna;
 import model.planes.Plane;
-import view.PlaneRender;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class MapController extends Serialization implements Controller {
+public class MapController implements Controller {
 
     @FXML
     private AnchorPane currentScene;
@@ -27,6 +27,15 @@ public class MapController extends Serialization implements Controller {
 
     @FXML
     private Button planeList;
+
+    private Storage storage;
+
+    private ArrayList<Airport> airports = new ArrayList<>();
+    private ArrayList<Plane> planes = new ArrayList<>();
+
+    public void loadHelper(Storage storage) {
+        this.storage = storage;
+    }
 
     // nastavi vsetky buttony(letiska)
     private synchronized void initializeAirports() {
@@ -41,7 +50,7 @@ public class MapController extends Serialization implements Controller {
                     airports.add(new Airport(airport.getId(), position));
                     //saveAirports();
                 } else {
-                    loadAirports();
+                    airports = storage.loadAirports();
                 }
 
                 int finalI = i;
@@ -79,30 +88,26 @@ public class MapController extends Serialization implements Controller {
             for (Plane p : planes) {
                 p.takeoff();
             }
-            savePlanes();
+            storage.savePlanes(planes);
             // znova sa ulozia aj letiska
-            // lebo plane.setStart/Destination zmenii ArrayList lietadiel, ktore z letiska odchadzaju alebo prichadzaju
-            saveAirports();
+            // lebo plane.setStart/Destination zmeni ArrayList lietadiel, ktore z letiska odchadzaju alebo prichadzaju
+            storage.saveAirports(airports);
         } else {
             // ked uz boli vytvorene, tak sa len nacitaju
-            loadPlanes();
+            planes = storage.loadPlanes();
         }
-    }
-
-    static void incrementCounter() {
-        Main.counter++;
     }
 
     // zobrazi dve tabulky s lietadlami, ktore z letiska odisli alebo do neho prichadzaju
     private void showAirportInfo(int i) {
         try {
-            //loadPlanes();
-            loadAirports(); // to aby sa updatli potom, ked sa lietadla v AirTraffic zmenili
+            airports = storage.loadAirports(); // to aby sa updatli potom, ako sa lietadla v thread AirTraffic zmenili
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/AirportInfo.fxml"));
             AnchorPane newScene = loader.load(); // nacita novu scenu z /view/...
 
             AirportInfoController controller = loader.getController(); // ziska controller nacitanej sceny
             controller.loadSelectedAirport(airports.get(i)); // "posle" do controlleru letisko, o ktorom sa maju zobrazit informacie
+            controller.loadHelper(storage);
             currentScene.getChildren().add(newScene); // prida na obrazovku tabulky
 
         } catch (IOException ex) {
@@ -113,12 +118,12 @@ public class MapController extends Serialization implements Controller {
     // zobrazi tabulku so vsetkymi lietadlami
     private void showPlaneList() {
         try {
-            loadPlanes(); // to aby sa updatli
+            planes = storage.loadPlanes(); // to aby sa updatli potom, ako sa lietadla v thread AirTraffic zmenili
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/PlaneList.fxml"));
             AnchorPane newScene = loader.load(); // nacita novu scenu z /view/...
 
-            PlaneListController controller = loader.getController(); // ziska controller nacitanej sceny
-            controller.loadCurrentPlanes(planes); // "posle" do controlleru lietadla, ktore sa zobrazia v tabulke
+            PlaneListController controller = loader.getController(); // ziska controller
+            controller.loadHelper(storage);
             currentScene.getChildren().add(newScene); // prida na obrazovku tabulku s lietadlami
 
         } catch (IOException ex) {
@@ -126,26 +131,22 @@ public class MapController extends Serialization implements Controller {
         }
     }
 
+    private static void incrementCounter() { Main.counter++; }
+
     @Override
     public void initialize() {
-        initializeAirports();
-        initializePlanes();
+        Platform.runLater(() -> {
+            initializeAirports(); //nacitaju sa letiska
+            initializePlanes(); // nacitaju sa lietadla
 
-        //System.out.println("|tu|");
+            if (Main.counter == 0) { // ak je zaciatok, tak sa vytvori thread
+                Thread airTraffic = new Thread(new AirTraffic(currentScene, airports, planes, storage));
+                airTraffic.setDaemon(true);
+                airTraffic.start();
+            }
 
-        if (Main.counter == 0) {
-            Thread airTrafic = new Thread(new AirTraffic(currentScene, airports, planes));
-            airTrafic.setDaemon(true);
-            airTrafic.start();
-        }
-
-        //System.out.println(planes.get(0).getStart() + " " + planes.get(2).getStart());
-        //System.out.println(planes.get(0).getStart().getDeparture(0) + " " + planes.get(0)); // funguje to pog
-        //System.out.println(planes.get(0).getStart().getDeparture(1) + " " + planes.get(2)); // aj toto funguje pog
-        //System.out.println(planes.get(0).getStart() + " " + airports.get(0));
-        //System.out.println(planes.get(0).equals(airports.get(0).getDeparture(0)));
-
-        incrementCounter();
+            incrementCounter();
+        });
 
         planeList.setOnAction(e -> showPlaneList());
         logout.setOnAction(e -> {

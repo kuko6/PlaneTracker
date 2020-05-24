@@ -1,25 +1,21 @@
 package controller;
 
 import controller.abstracts.Controller;
-import controller.abstracts.Serialization;
+import controller.helper.Storage;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Line;
 import model.planes.Plane;
-import view.PlaneRender;
+import view.PlaneRenderer;
 
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class PlaneInfoController extends Serialization implements Controller {
+public class PlaneInfoController implements Controller {
 
     @FXML
     private AnchorPane currentScene;
@@ -60,23 +56,29 @@ public class PlaneInfoController extends Serialization implements Controller {
     @FXML
     private Label speed;
 
+    /*
     @FXML
     private Button ref;
+     */
 
     private Plane plane; // zvolene lietadlo
-    private PlaneRender planeRender = new PlaneRender();
+    private ArrayList<Plane> planes;
+
+    private PlaneRenderer planeRenderer = new PlaneRenderer();
+    private Storage storage;
+
     ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
 
-    public void loadSelectedPlane(Plane plane) {
-        this.plane = plane;
-    }
+    public void loadSelectedPlane(Plane plane) { this.plane = plane; }
+
+    public void loadHelper(Storage storage) { this.storage = storage; }
 
     private void update() {
         exec.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                loadAirports();
-                loadPlanes();
+                //helper.loadAirports();
+                planes = storage.loadPlanes();
 
                 refresh();
             }
@@ -84,10 +86,6 @@ public class PlaneInfoController extends Serialization implements Controller {
     }
 
     private void refresh() {
-        //loadAirports();
-        //loadPlanes();
-        //System.out.println(plane.getId());
-
         boolean landed = true;
         for (Plane p : planes) {
             if (p.getId().equals(this.plane.getId())) {
@@ -99,18 +97,18 @@ public class PlaneInfoController extends Serialization implements Controller {
 
         if (landed) {
             System.out.println("Plane ID: " + plane.getId() + " has landed");
-            switchScene(currentScene, "Map");
+            switchToMap(currentScene, "Map", storage);
+            exec.shutdownNow();
             return;
         }
 
         Platform.runLater(() -> {
             showInfoBoard();
-            planeRender.highlightCompleted(plane.getFlightPath(), currentScene);
+            planeRenderer.highlightCompleted(plane.getFlightPath(), currentScene);
         });
     }
 
     private void showInfoBoard() {
-        //drawLine();
         manufacturer.setText(plane.getManufacturer());
         type.setText(plane.getType());
         id.setText(plane.getId());
@@ -128,12 +126,11 @@ public class PlaneInfoController extends Serialization implements Controller {
     @Override
     public void initialize() {
         currentScene.setOnMouseClicked(e -> {
-            //System.out.println(e.getClickCount());
-            switchScene(currentScene, "Map");
+            switchToMap(currentScene, "Map", storage);
             exec.shutdownNow();
         });
 
-        ref.setOnAction(e -> refresh());
+        //ref.setOnAction(e -> refresh());
         //Platform.runLater(() -> showInfoBoard());
         update();
     }

@@ -1,7 +1,8 @@
 package controller;
 
 import controller.abstracts.Controller;
-import controller.abstracts.Serialization;
+import controller.helper.Storage;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -12,9 +13,10 @@ import model.planes.Boeing;
 import model.planes.Cessna;
 import model.planes.Plane;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
-public class AddPlaneController extends Serialization implements Controller {
+public class AddPlaneController implements Controller {
 
     @FXML
     private AnchorPane currentScene;
@@ -42,14 +44,15 @@ public class AddPlaneController extends Serialization implements Controller {
 
     private Stage dialogStage; // dialogove okno, ktore je na obrazovke
 
+    private ArrayList<Airport> airports;
+    private ArrayList<Plane> planes;
+
     private Plane newPlane; // novo vytvorene lietadlo
     private Airport start; // letisko, z ktoreho bolo zavolane dialogove okno, zaciatocne letisko pre nove lietadlo
-
+    private Storage storage;
     private String planeManufacturer;
 
-    public AddPlaneController() {
-        super();
-    }
+    public void loadHelper(Storage storage) { this.storage = storage; }
 
     public void setStartAirport(Airport airport) {
         this.start = airport;
@@ -65,7 +68,11 @@ public class AddPlaneController extends Serialization implements Controller {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText("Incorrect input");
-        alert.setContentText("You entered incorrect " + error + ". \nPlease try again.");
+        if (error.equals("MaxRange")) {
+            alert.setContentText("Destination is out of range for Cessna.\n" + "Please choose different Manufacturer or Destination.");
+        } else {
+            alert.setContentText("You entered incorrect " + error + ". \nPlease try again.");
+        }
         alert.showAndWait();
 
         if (error.equals("Destination")) {
@@ -80,6 +87,14 @@ public class AddPlaneController extends Serialization implements Controller {
             }
         }
         return false;
+    }
+
+    private boolean checkMaxRange(Cessna plane) {
+        FlightPath fp = new FlightPath(plane.getStart().getLocation(), plane.getDestination().getLocation());
+        if (fp.getLength() > plane.getMaxRange()) {
+            return false;
+        }
+        return true;
     }
 
     private void addPlane() {
@@ -125,10 +140,20 @@ public class AddPlaneController extends Serialization implements Controller {
             showErrorDialog("Destination");
         } else {
             newPlane.setStart(tmp);
+
+            // Cessna ma ako jedine lietadlo maxRange
+            if (newPlane instanceof Cessna) {
+                if (!checkMaxRange((Cessna) newPlane)) {
+                    showErrorDialog("MaxRange");
+                    return;
+                }
+            }
+
             newPlane.takeoff();
             planes.add(newPlane);
-            saveAirports();
-            savePlanes();
+
+            storage.saveAirports(airports);
+            storage.savePlanes(planes);
 
             closeDialog();
         }
@@ -137,13 +162,14 @@ public class AddPlaneController extends Serialization implements Controller {
     // zavrie dialogove okno a vrati sa na hlavnu obrazovku
     private void closeDialog() {
         this.dialogStage.close();
-        //switchScene(currentScene, "Map");
     }
 
     @Override
     public void initialize() {
-        loadAirports();
-        loadPlanes();
+        Platform.runLater(() -> {
+            airports = storage.loadAirports();
+            planes = storage.loadPlanes();
+        });
 
         add.setOnAction(e -> addPlane());
         cancel.setOnAction(e -> closeDialog());
@@ -151,7 +177,6 @@ public class AddPlaneController extends Serialization implements Controller {
             choice.setOnAction(e -> {
                 planeManufacturer = choice.getText();
                 manufacturer.setText(planeManufacturer);
-                //System.out.println(planeManufacturer);
             });
         }
     }

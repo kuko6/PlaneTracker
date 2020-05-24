@@ -2,19 +2,17 @@ package controller;
 
 import controller.abstracts.Controller;
 import controller.abstracts.PlaneInfo;
+import controller.helper.Storage;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Line;
 import model.planes.Plane;
 
-import java.io.*;
 import java.util.ArrayList;
 
 public class PlaneListController implements Controller, PlaneInfo {
@@ -35,12 +33,13 @@ public class PlaneListController implements Controller, PlaneInfo {
     private TableColumn<Plane, String> destination;
 
     private ArrayList<Plane> planes = new ArrayList<>(); // obsahuje vsetky lietadla
+    private Storage storage;
     private ObservableList<Plane> planeList;
     private Node[] nodes;
 
-
-    public void loadCurrentPlanes(ArrayList<Plane> currentPlanes) {
-        this.planes = currentPlanes;
+    public void loadHelper(Storage storage) {
+        this.storage = storage;
+        this.planes = storage.loadPlanes();
         planeList = FXCollections.observableArrayList(planes);
     }
 
@@ -62,9 +61,9 @@ public class PlaneListController implements Controller, PlaneInfo {
     @Override
     public void initialize() {
         nodes = new Node[] {planeTable};
-        currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
+        currentScene.setOnMouseClicked(e -> switchToMap(currentScene, "Map", storage));
         Platform.runLater(() -> { // potrebuje pockat, pokial sa nenacita
-            showPlaneInfo(planeTable, currentScene, nodes);
+            showPlaneInfo(planeTable, currentScene, nodes, storage);
             showCurrentPlanes();
         });
     }

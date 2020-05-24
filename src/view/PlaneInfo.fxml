@@ -51,6 +51,6 @@
             <Insets left="5.0" />
          </padding>
       </GridPane>
-      <Button fx:id="ref" layoutX="732.0" layoutY="573.0" mnemonicParsing="false" text="refresh" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="206.0" />
+     <!-- <Button fx:id="ref" layoutX="732.0" layoutY="573.0" mnemonicParsing="false" text="refresh" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="206.0" /> -->
    </children>
 </AnchorPane>

@@ -11,35 +11,35 @@ import java.util.ArrayList;
 
 public abstract class Serialization {
 
-    public ArrayList<Airport> airports = new ArrayList<>();
-    public ArrayList<Plane> planes = new ArrayList<>();
-    public ArrayList<User> users = new ArrayList<>();
+    protected ArrayList<Airport> serializedAirports = new ArrayList<>();
+    protected ArrayList<Plane> serializedPlanes = new ArrayList<>();
+    protected ArrayList<User> users = new ArrayList<>();
 
     // toto asi nie je najlepsie riesenie, ale funguje to xd
     // problem bol, ze pri serializacii a potom deserializacii sa menia referencie na objekty
     // takze napriklad, ked je start lietadla v airport1 nie je to to iste letisko ako airport1 ulozene v airports
-    public synchronized void repairReferences() {
+    private synchronized void repairReferences() {
         String airportName;
         int airportIndex;
-        for (Plane plane : planes) {
+        for (Plane plane : serializedPlanes) {
             airportName = plane.getStart().getName();
             airportName = airportName.replace("airport", "");
             airportIndex = Integer.parseInt(airportName) - 1;
-            airports.set(airportIndex, plane.getStart());
+            serializedAirports.set(airportIndex, plane.getStart());
 
             airportName = plane.getDestination().getName();
             airportName = airportName.replace("airport", "");
             airportIndex = Integer.parseInt(airportName) - 1;
-            airports.set(airportIndex, plane.getDestination());
+            serializedAirports.set(airportIndex, plane.getDestination());
         }
     }
 
-    public synchronized void saveAirports() {
+    protected synchronized void saveAirports() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
             String p = path.toString() + "/data/airports.txt";
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(p));
-            objectOutputStream.writeObject(airports);
+            objectOutputStream.writeObject(serializedAirports);
             objectOutputStream.flush();
             objectOutputStream.close();
 
@@ -48,12 +48,12 @@ public abstract class Serialization {
         }
     }
 
-    public synchronized void loadAirports() {
+    protected synchronized void loadAirports() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
             String p = path.toString() + "/data/airports.txt";
             ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(p));
-            airports = (ArrayList<Airport>) objectInputStream.readObject();
+            serializedAirports = (ArrayList<Airport>) objectInputStream.readObject();
             objectInputStream.close();
 
         } catch (IOException | ClassNotFoundException e) {
@@ -62,12 +62,12 @@ public abstract class Serialization {
         }
     }
 
-    public synchronized void savePlanes() {
+    protected synchronized void savePlanes() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
             String p = path.toString() + "/data/currentPlanes.txt";
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(p));
-            objectOutputStream.writeObject(planes);
+            objectOutputStream.writeObject(serializedPlanes);
             objectOutputStream.flush();
             objectOutputStream.close();
 
@@ -76,12 +76,12 @@ public abstract class Serialization {
         }
     }
 
-    public synchronized void loadPlanes() {
+    protected synchronized void loadPlanes() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
             String p = path.toString() + "/data/currentPlanes.txt";
             ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(p));
-            planes = (ArrayList<Plane>) objectInputStream.readObject();
+            serializedPlanes = (ArrayList<Plane>) objectInputStream.readObject();
             repairReferences();
             objectInputStream.close();
 
@@ -90,7 +90,7 @@ public abstract class Serialization {
         }
     }
 
-    public void loadUsers() {
+    protected void loadUsers() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
             String p = path.toString() + "/data/users.txt";
@@ -104,7 +104,7 @@ public abstract class Serialization {
         }
     }
 
-    public void saveUser() {
+    protected void saveUser() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
             String p = path.toString() + "/data/users.txt";

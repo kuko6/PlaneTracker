@@ -1,100 +1,84 @@
 package controller;
 
 import controller.abstracts.PlaneInfo;
-import controller.abstracts.Serialization;
+import controller.helper.Storage;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import model.Airport;
 import model.planes.Plane;
-import view.PlaneRender;
+import view.PlaneRenderer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class AirTraffic extends Serialization implements Runnable, PlaneInfo {
+public class AirTraffic implements Runnable, PlaneInfo {
 
-    AnchorPane currentScene;
-    ArrayList<Plane> tmpPlanes;
-    ArrayList<Node> images = new ArrayList<>();
-    PlaneRender planeRender = new PlaneRender();
+    @FXML
+    private AnchorPane currentScene;
 
-    public AirTraffic(AnchorPane currentScene, ArrayList<Airport> airports, ArrayList<Plane> planes) {
-        super();
+    private ArrayList<Airport> airports;
+    private ArrayList<Plane> planes;
+    private ArrayList<Plane> tmpPlanes;
+
+    private ArrayList<Node> images = new ArrayList<>();
+    private PlaneRenderer planeRenderer = new PlaneRenderer();
+    private Storage storage;
+
+    public AirTraffic(AnchorPane currentScene, ArrayList<Airport> airports, ArrayList<Plane> planes, Storage storage) {
         //System.out.println("zacinam");
         this.airports = airports;
         this.planes = planes;
         this.currentScene = currentScene;
+        this.storage = storage;
     }
 
     private void clean() {
-        //currentScene.getChildren().removeIf(node -> node instanceof Polygon);
-        //currentScene.getChildren().removeIf(node -> node instanceof ImageView && node.getId().equals("plane"));
-        /*
-        for (Node node : currentScene.getChildren()) {
-            if (node.getId() != null && node instanceof ImageView) {
-                images.add(node);
-            }
-        }
-         */
         currentScene.getChildren().removeAll(images);
         images.clear();
-        //System.out.println(images.size());
     }
 
     @Override
     public void run() {
         while (true) {
-            if (Main.counter == 0) { // toto teoreticky ani nebude treba
+            if (Main.counter == 0) {
                 //System.out.println("koncim");
                 Thread.currentThread().interrupt();
-                clean();
+                Platform.runLater(() -> clean());
                 break;
             }
 
-            loadAirports();
-            loadPlanes();
+            airports = storage.loadAirports();
+            planes = storage.loadPlanes();
             tmpPlanes = new ArrayList<Plane>(planes); // takto, lebo menim list pocas toho ako ho prechadzam
             Platform.runLater(() -> clean());
             int i = 0;
             for (Plane plane : tmpPlanes) {
                 plane.fly();
-                //plane.contactAirport();
+                
                 int finalI = i;
                 i++;
                 Platform.runLater(() -> {
-                    images.add(planeRender.drawPlane(plane.getFlightPath(), currentScene));
+                    images.add(planeRenderer.drawPlane(plane.getFlightPath(), currentScene));
                     if (images.get(finalI) != null) {
                         images.get(finalI).setOnMouseClicked(e -> {
                             if (e.getClickCount() == 2) {
-                                //currentScene.getChildren().removeIf(node -> node instanceof Line); // vymaze ciary z predchadzajuceho lietadla
-                                showPlaneInfo(planes.get(finalI), currentScene);
+                                currentScene.getChildren().removeIf(node -> node instanceof Line); // vymaze ciary z predchadzajuceho lietadla
+                                showPlaneInfo(planes.get(finalI), currentScene, storage);
                             }
                         });
                     }
                 });
 
-                /*
-                if (plane instanceof Airbus) {
-                    System.out.println(plane.getId());
-                    System.out.println("presiel: " + plane.getFlightPath().getTravelled() + " rychlost: " + plane.getSpeed());
-                }
-                System.out.println();
-                 */
-                //System.out.println(planes.size());
                 if (!plane.getStatus()) {
                     planes.remove(plane);
                     i--;
                 }
             }
-            //System.out.println("Thread name="+Thread.currentThread().getName());
-            //System.out.println(plane.getStart().getDeparture(0).getFlightPath().getCompleted());
-            //System.out.println(airports.contains(plane.getStart()));
 
-            saveAirports();
-            savePlanes();
+            storage.saveAirports(airports);
+            storage.savePlanes(planes);
 
             try {
                 Thread.sleep(1000); // opakuje sa kazdu sekundu

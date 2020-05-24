@@ -2,6 +2,7 @@ package controller;
 
 import controller.abstracts.Controller;
 import controller.abstracts.Serialization;
+import controller.helper.Storage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -47,7 +48,7 @@ public class LoginScreenController extends Serialization implements Controller {
             if (username.getText().equals(user.getUsername())) {
                 if (password.getText().equals(user.getPassword())) {
                     System.out.println("Logged in as " + user.getUsername() + "\n");
-                    this.switchScene(currentScene, "Map");
+                    this.switchToMap(currentScene, "Map", new Storage());
                     return;
                 }
             }

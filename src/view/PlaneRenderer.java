@@ -9,7 +9,12 @@ import javafx.scene.shape.Polygon;
 import model.FlightPath;
 import model.planes.Plane;
 
-public class PlaneRender {
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+public class PlaneRenderer {
 
     public void highlightCompleted(FlightPath flightPath, AnchorPane currentScene) {
         Line line = new Line(flightPath.getStartX(), flightPath.getStartY(), flightPath.getX(), flightPath.getY());
@@ -26,10 +31,6 @@ public class PlaneRender {
     }
 
     public ImageView drawPlane(FlightPath flightPath, AnchorPane currentScene) {
-        //Polygon polygon = new Polygon();
-        //polygon.getPoints().addAll(flightPath.getX(), flightPath.getY(), flightPath.getX() - 20.0, flightPath.getY() - 10.0, flightPath.getX() - 20.0, flightPath.getY() + 10.0);
-        //currentScene.getChildren().add(polygon);
-
         if (flightPath == null) { // ked uz lietadlo pristalo
             return null;
         }

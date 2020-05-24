@@ -2,8 +2,8 @@ package controller;
 
 import controller.abstracts.Controller;
 import controller.abstracts.PlaneInfo;
+import controller.helper.Storage;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import model.Airport;
 import model.planes.Plane;
@@ -45,6 +44,11 @@ public class AirportInfoController implements Controller, PlaneInfo {
     private ObservableList<Plane> arrivalsList = FXCollections.observableArrayList();
     private ObservableList<Plane> departuresList = FXCollections.observableArrayList();
     private Node[] nodes;
+    private Storage storage; // tu vlastne potrebujem helper len aby som ho poslal dalej do PlanInfoController
+
+    public void loadHelper(Storage storage) {
+        this.storage = storage;
+    }
 
     public void loadSelectedAirport(Airport airport) {
         this.airport = airport;
@@ -75,10 +79,10 @@ public class AirportInfoController implements Controller, PlaneInfo {
             Stage addDialog = new Stage();
             controller.setDialogStage(addDialog);
             controller.setStartAirport(airport);
+            controller.loadHelper(storage);
             addDialog.setTitle("Add Departure");
             addDialog.setScene(scene);
             addDialog.showAndWait(); // okno bude na obrazovke, az pokial ho pouzivatel nezrusi
-
             //switchScene(currentScene, "Map");
 
         } catch (IOException ex) {
@@ -89,11 +93,11 @@ public class AirportInfoController implements Controller, PlaneInfo {
     @Override
     public void initialize() {
         nodes = new Node[] {add, arrivalsTable, departuresTable};
-        currentScene.setOnMouseClicked(e -> switchScene(currentScene, "Map"));
         add.setOnAction(e -> showAddDialog());
+        currentScene.setOnMouseClicked(e -> switchToMap(currentScene, "Map", storage));
         Platform.runLater(() -> {
-            showPlaneInfo(arrivalsTable, currentScene, nodes);
-            showPlaneInfo(departuresTable, currentScene, nodes);
+            showPlaneInfo(arrivalsTable, currentScene, nodes, storage);
+            showPlaneInfo(departuresTable, currentScene, nodes, storage);
             showTimetable();
         });
     }

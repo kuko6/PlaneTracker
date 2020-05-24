@@ -13,7 +13,7 @@ public class Cessna extends Plane {
     private final int maxRateOfClimb;
     private final int maxAltitude;
 
-    private int maxRange;
+    private int maxRange = 350;
 
     public Cessna(String type, String airline, String id) {
         super(type, airline, id);
@@ -28,6 +28,8 @@ public class Cessna extends Plane {
     public final String getManufacturer() { return this.manufacturer; }
 
     public int getCruisingSpeed() { return this.cruisingSpeed; }
+
+    public int getMaxRange() { return this.maxRange; }
 
     public int getMaxAltitude() { return this.maxAltitude; }
 

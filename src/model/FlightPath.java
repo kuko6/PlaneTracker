@@ -25,6 +25,18 @@ public class FlightPath implements Serializable {
     private String startTime;
     private String arrivalTime;
 
+    public FlightPath(double[] start, double[] destination) {
+        this.x = start[0];
+        this.y = start[1];
+        this.startX = start[0];
+        this.startY = start[1];
+        this.destinationX = destination[0];
+        this.destinationY = destination[1];
+        //this.averageSpeed = averageSpeed;
+
+        this.length = Math.hypot(destination[0] - start[0], destination[1] - start[1]);
+    }
+
     public FlightPath(double[] start, double[] destination, double averageSpeed) {
         this.x = start[0];
         this.y = start[1];
