@@ -34,7 +34,7 @@ public interface PlaneInfo {
                     PlaneInfoController controller = loader.getController();
                     controller.loadSelectedPlane(selectedPlane);
                     controller.loadHelper(storage);
-                    renderer.drawFlightPath(selectedPlane, currentScene);
+                    renderer.drawFlightPath(selectedPlane.getFlightPath(), currentScene);
                     currentScene.getChildren().add(newScene);
 
                 } catch (IOException ex) {
@@ -52,7 +52,7 @@ public interface PlaneInfo {
             PlaneInfoController controller = loader.getController();
             controller.loadHelper(storage);
             controller.loadSelectedPlane(selectedPlane);
-            renderer.drawFlightPath(selectedPlane, currentScene);
+            renderer.drawFlightPath(selectedPlane.getFlightPath(), currentScene);
             currentScene.getChildren().add(newScene);
 
         } catch (IOException ex) {

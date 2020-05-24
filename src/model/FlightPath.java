@@ -45,8 +45,6 @@ public class FlightPath implements Serializable {
         this.destinationX = destination[0];
         this.destinationY = destination[1];
 
-        //this.averageSpeed = averageSpeed;
-
         this.length = Math.hypot(destination[0] - start[0], destination[1] - start[1]);
         this.heading = setHeading(startX, destinationX, length);
 
@@ -55,19 +53,11 @@ public class FlightPath implements Serializable {
 
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("kk:mm");
         this.startTime = LocalTime.now().format(timeFormat);
-        //System.out.println(this.averageSpeed);
         long time = (long) (this.length /averageSpeed);
 
         // keby som chcel cas, za aky to bude trvat naozaj, tak staci dat .plusSeconds(time)
         this.arrivalTime = LocalTime.now().plusMinutes(time).format(timeFormat);
-        //this.arrivalTime = LocalTime.now().plusSeconds(time).format(timeFormat);
-
-        /*
-        System.out.println("smer: " + heading);
-        System.out.println("dlzka " + lenght);
-        System.out.println("startx/y: [" + startX + ", " + startY + "]");
-        System.out.println("destx/y: [" + destinationX + ", " + destinationY + "]");
-        */
+        //this.arrivalTime = LocalTime.now().plusSeconds(time).format(timeFormat); // irl cas
     }
 
     private double setHeading(double startX, double destinationX, double lenght) {
@@ -114,6 +104,8 @@ public class FlightPath implements Serializable {
 
     public int getHeadingX() { return headingX; }
 
+    public int getHeadingY() { return headingY; }
+
     public double getTravelled() { return travelled; }
 
     public double getCompleted() {
@@ -127,12 +119,5 @@ public class FlightPath implements Serializable {
         travelled += speed;
         x = x + (Math.cos(heading) * (travelled - tmp)) * headingX;
         y = y + (Math.sin(heading) * (travelled - tmp)) * headingY;
-        /*
-        System.out.println(travelled);
-        System.out.println("x sa zvacsilo o: " + Math.cos(heading) * (travelled - tmp));
-        System.out.println("y sa zvacsilo o: " + Math.sin(heading) * (travelled - tmp));
-        System.out.println("x/y: [" + x + ", " + y + "]\n");
-        System.out.println(speed);
-         */
     }
 }

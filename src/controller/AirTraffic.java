@@ -44,8 +44,8 @@ public class AirTraffic implements Runnable, PlaneInfo {
         while (true) {
             if (Main.counter == -1) {
                 //System.out.println("koncim");
-                Thread.currentThread().interrupt();
                 Platform.runLater(() -> clean());
+                Thread.currentThread().interrupt();
                 break;
             }
 
@@ -60,7 +60,7 @@ public class AirTraffic implements Runnable, PlaneInfo {
                 int finalI = i;
                 i++;
                 Platform.runLater(() -> {
-                    images.add(planeRenderer.drawPlane(plane.getFlightPath(), currentScene));
+                    images.add(planeRenderer.drawPlane(plane, currentScene));
                     if (images.get(finalI) != null) {
                         images.get(finalI).setOnMouseClicked(e -> {
                             if (e.getClickCount() == 2) {
