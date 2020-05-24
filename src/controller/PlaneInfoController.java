@@ -4,6 +4,7 @@ import controller.abstracts.Controller;
 import controller.helper.Storage;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -56,10 +57,8 @@ public class PlaneInfoController implements Controller {
     @FXML
     private Label speed;
 
-    /*
     @FXML
-    private Button ref;
-     */
+    private Button back;
 
     private Plane plane; // zvolene lietadlo
     private ArrayList<Plane> planes;
@@ -77,7 +76,6 @@ public class PlaneInfoController implements Controller {
         exec.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                //helper.loadAirports();
                 planes = storage.loadPlanes();
 
                 refresh();
@@ -125,13 +123,11 @@ public class PlaneInfoController implements Controller {
 
     @Override
     public void initialize() {
-        currentScene.setOnMouseClicked(e -> {
+        back.setOnAction(e -> {
             switchToMap(currentScene, "Map", storage);
             exec.shutdownNow();
         });
 
-        //ref.setOnAction(e -> refresh());
-        //Platform.runLater(() -> showInfoBoard());
         update();
     }
 }

@@ -92,7 +92,7 @@ public class RegisterController extends Serialization implements Controller {
     // zavrie dialogove okno a vrati sa na hlavnu obrazovku
     private void closeDialog() {
         this.dialogStage.close();
-        //switchScene(currentScene, "LoginScreen");
+        switchScene(currentScene, "LoginScreen");
     }
 
     @Override

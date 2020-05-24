@@ -1,6 +1,7 @@
 package controller;
 
 import controller.abstracts.Controller;
+import controller.abstracts.Serialization;
 import controller.helper.Storage;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -17,7 +18,7 @@ import model.planes.Plane;
 import java.io.*;
 import java.util.ArrayList;
 
-public class MapController implements Controller {
+public class MapController extends Serialization implements Controller {
 
     @FXML
     private AnchorPane currentScene;
@@ -139,10 +140,12 @@ public class MapController implements Controller {
             initializeAirports(); //nacitaju sa letiska
             initializePlanes(); // nacitaju sa lietadla
 
-            if (Main.counter == 0) { // ak je zaciatok, tak sa vytvori thread
+            // 0 je uplny zaciatok, -1 je logout
+            if (Main.counter == 0 || Main.counter == -1) {
                 Thread airTraffic = new Thread(new AirTraffic(currentScene, airports, planes, storage));
                 airTraffic.setDaemon(true);
                 airTraffic.start();
+                Main.counter = 1;
             }
 
             incrementCounter();
@@ -151,8 +154,15 @@ public class MapController implements Controller {
         planeList.setOnAction(e -> showPlaneList());
         logout.setOnAction(e -> {
             System.out.println("Logged out\n");
+
+            // ulozia sa lietadla
+            serializedAirports = storage.loadAirports();
+            serializedPlanes = storage.loadPlanes();
+            saveAirports();
+            savePlanes();
+
             switchScene(currentScene ,"LoginScreen");
-            Main.counter = 0;
+            Main.counter = -1;
         });
     }
 }

@@ -129,7 +129,7 @@ public class AddPlaneController implements Controller {
             }
             if (airport.getName().equalsIgnoreCase(start.getName())) {
                 tmp = airport;
-                //newPlane.setStart(airport); // takto by to zapisal zly objekt
+                //newPlane.setStart(airport); // takto by sa to pokazilo, keby bol destination zly
             }
         }
 
@@ -145,6 +145,8 @@ public class AddPlaneController implements Controller {
             if (newPlane instanceof Cessna) {
                 if (!checkMaxRange((Cessna) newPlane)) {
                     showErrorDialog("MaxRange");
+                    tmp.getDepartures().remove(newPlane);
+                    newPlane.getDestination().getArrivals().remove(newPlane);
                     return;
                 }
             }

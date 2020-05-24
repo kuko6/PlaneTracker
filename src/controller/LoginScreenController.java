@@ -44,11 +44,20 @@ public class LoginScreenController extends Serialization implements Controller {
     }
 
     private void authenticate() {
+        loadUsers();
         for (User user : users) {
             if (username.getText().equals(user.getUsername())) {
                 if (password.getText().equals(user.getPassword())) {
                     System.out.println("Logged in as " + user.getUsername() + "\n");
-                    this.switchToMap(currentScene, "Map", new Storage());
+                    Storage storage = new Storage();
+
+                    if (Main.counter == -1) {
+                        loadAirports();
+                        loadPlanes();
+                        storage.saveAirports(serializedAirports);
+                        storage.savePlanes(serializedPlanes);
+                    }
+                    this.switchToMap(currentScene, "Map", storage);
                     return;
                 }
             }
@@ -76,9 +85,7 @@ public class LoginScreenController extends Serialization implements Controller {
             addDialog.setTitle("Register");
             addDialog.setScene(scene);
             addDialog.showAndWait(); // okno bude na obrazovke, az pokial ho pouzivatel nezrusi
-
-            switchScene(currentScene, "LoginScreen");
-
+            //switchScene(currentScene, "LoginScreen");
         } catch (IOException ex) {
             ex.printStackTrace();
         }

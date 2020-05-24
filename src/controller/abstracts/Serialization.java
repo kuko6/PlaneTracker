@@ -99,7 +99,7 @@ public abstract class Serialization {
             objectInputStream.close();
 
         } catch (IOException | ClassNotFoundException e) {
-            //System.out.println("Prazdny zoznam :(");
+            System.out.println("no1 has registered yet.");
             e.printStackTrace();
         }
     }

@@ -33,8 +33,6 @@ public class Boeing extends Plane {
         timeOfDescend = flightPath.getLength() - flightPath.getTravelled();
         timeOfDescend = timeOfDescend - ((double) cruisingSpeed/speedConst);
         //timeOfDescend = timeOfDescend - maxAcceleration;
-        System.out.println(id);
-        System.out.println("klesam na: " + timeOfDescend);
     }
 
     public void takeoff() {

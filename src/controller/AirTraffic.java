@@ -42,7 +42,7 @@ public class AirTraffic implements Runnable, PlaneInfo {
     @Override
     public void run() {
         while (true) {
-            if (Main.counter == 0) {
+            if (Main.counter == -1) {
                 //System.out.println("koncim");
                 Thread.currentThread().interrupt();
                 Platform.runLater(() -> clean());
@@ -56,7 +56,7 @@ public class AirTraffic implements Runnable, PlaneInfo {
             int i = 0;
             for (Plane plane : tmpPlanes) {
                 plane.fly();
-                
+
                 int finalI = i;
                 i++;
                 Platform.runLater(() -> {

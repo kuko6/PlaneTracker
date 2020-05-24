@@ -40,6 +40,9 @@ public class AirportInfoController implements Controller, PlaneInfo {
     @FXML
     private TableColumn<Plane, String> departures;
 
+    @FXML
+    private Button back;
+
     private Airport airport; // zvolene letisko
     private ObservableList<Plane> arrivalsList = FXCollections.observableArrayList();
     private ObservableList<Plane> departuresList = FXCollections.observableArrayList();
@@ -92,9 +95,9 @@ public class AirportInfoController implements Controller, PlaneInfo {
 
     @Override
     public void initialize() {
-        nodes = new Node[] {add, arrivalsTable, departuresTable};
+        nodes = new Node[] {add, back, arrivalsTable, departuresTable};
         add.setOnAction(e -> showAddDialog());
-        currentScene.setOnMouseClicked(e -> switchToMap(currentScene, "Map", storage));
+        back.setOnAction(e -> switchToMap(currentScene, "Map", storage));
         Platform.runLater(() -> {
             showPlaneInfo(arrivalsTable, currentScene, nodes, storage);
             showPlaneInfo(departuresTable, currentScene, nodes, storage);

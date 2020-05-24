@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
@@ -31,6 +32,9 @@ public class PlaneListController implements Controller, PlaneInfo {
 
     @FXML
     private TableColumn<Plane, String> destination;
+
+    @FXML
+    private Button back;
 
     private ArrayList<Plane> planes = new ArrayList<>(); // obsahuje vsetky lietadla
     private Storage storage;
@@ -60,8 +64,8 @@ public class PlaneListController implements Controller, PlaneInfo {
 
     @Override
     public void initialize() {
-        nodes = new Node[] {planeTable};
-        currentScene.setOnMouseClicked(e -> switchToMap(currentScene, "Map", storage));
+        nodes = new Node[] {back, planeTable};
+        back.setOnAction(e -> switchToMap(currentScene, "Map", storage));
         Platform.runLater(() -> { // potrebuje pockat, pokial sa nenacita
             showPlaneInfo(planeTable, currentScene, nodes, storage);
             showCurrentPlanes();

@@ -111,11 +111,7 @@ public abstract class Plane implements Serializable {
 
     public double getTimeOfDescend() { return timeOfDescend; }
 
-    public void setTimeOfDescend() {
-        timeOfDescend = flightPath.getLength() - flightPath.getTravelled();
-        System.out.println(id);
-        System.out.println("klesam na: " + timeOfDescend);
-    }
+    public void setTimeOfDescend() { timeOfDescend = flightPath.getLength() - flightPath.getTravelled(); }
 
     public void contactAirport() { start.updatePlane(this); }
 
