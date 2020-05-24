@@ -1,4 +1,4 @@
-package controller.helper;
+package helper;
 
 import model.Airport;
 import model.planes.Plane;

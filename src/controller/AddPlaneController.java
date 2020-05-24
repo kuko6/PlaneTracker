@@ -1,7 +1,7 @@
 package controller;
 
 import controller.abstracts.Controller;
-import controller.helper.Storage;
+import helper.Storage;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -16,6 +16,11 @@ import model.planes.Plane;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * AddPlaneController is used to show dialog window for adding planes.
+ *
+ * @author kuko6
+ */
 public class AddPlaneController implements Controller {
 
     @FXML
@@ -52,16 +57,37 @@ public class AddPlaneController implements Controller {
     private Storage storage;
     private String planeManufacturer;
 
+    /**
+     * This method sets helper class storage to AddPlaneController.
+     *
+     * @param storage helper class that holds ArrayLists of classes Airport and Plane
+     */
     public void loadHelper(Storage storage) { this.storage = storage; }
 
+    /**
+     * Sets start airport. Start airport is the airport on which user clicked Button add.
+     *
+     * @param airport this will be the start airport for the new plane
+     */
     public void setStartAirport(Airport airport) {
         this.start = airport;
     }
 
+    /**
+     * Sets dialog stage.
+     *
+     * @param stage the add dialogStage
+     */
     public void setDialogStage(Stage stage) {
         this.dialogStage = stage;
     }
 
+    /**
+     * Shows error window for the specific problem that occurred while creating new plane.
+     * Could be wrong id, destination, name.
+     *
+     * @param error type of error that occurred while creating new plane.
+     */
     // zobrazi na ploche chybove okno
     // okno sa zobrazi po nespravnom vstupe
     private void showErrorDialog(String error) {
@@ -80,6 +106,12 @@ public class AddPlaneController implements Controller {
         }
     }
 
+    /**
+     * Checks if there is another plane with same id as user wrote in TextFiled id.
+     *
+     * @param id id written by user in TextField id
+     * @return boolean, false if id is not used by other plane, true if is.
+     */
     private boolean checkPlaneID(String id) {
         for (Plane plane : planes) {
             if (plane.getId().equals(id)) {
@@ -89,6 +121,12 @@ public class AddPlaneController implements Controller {
         return false;
     }
 
+    /**
+     * Checks if distance between Airport start and destination is within the max range of the plane.
+     *
+     * @param plane Cessna
+     * @return boolean, returns false if distance is bigger than max range, true if it isn't
+     */
     private boolean checkMaxRange(Cessna plane) {
         FlightPath fp = new FlightPath(plane.getStart().getLocation(), plane.getDestination().getLocation());
         if (fp.getLength() > plane.getMaxRange()) {
@@ -97,6 +135,11 @@ public class AddPlaneController implements Controller {
         return true;
     }
 
+    /**
+     * Checks if TextFields were correctly filled.
+     * Creates new Plane and adds it to the planes ArrayList in storage if everything was correct.
+     * Otherwise shows errorDialog with the specific error that occurred.
+     */
     private void addPlane() {
         if (Objects.equals(type.getText(),"") || Objects.equals(airline.getText(),"") || Objects.equals(id.getText(),"")) {
             showErrorDialog("Type, Airline or ID");
@@ -161,11 +204,19 @@ public class AddPlaneController implements Controller {
         }
     }
 
+    /**
+     * Closes this dialogStage.
+     * After user clicked either cancel or add and everything was correct.
+     */
     // zavrie dialogove okno a vrati sa na hlavnu obrazovku
     private void closeDialog() {
         this.dialogStage.close();
     }
 
+    /**
+     * Sets add button to add new Plane, cancel to close this dialogStage.
+     * Also loads airports and planes from storage.
+     */
     @Override
     public void initialize() {
         Platform.runLater(() -> {

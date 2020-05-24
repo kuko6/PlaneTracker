@@ -12,12 +12,14 @@ import javafx.stage.Stage;
 import model.User;
 import model.exceptions.NoRegisteredUsersException;
 
-import java.io.*;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+/**
+ * RegisterController controls the addUser dialog window that is displayed when user clicks register button in LoginScreen view.
+ * It extends abstract class Serialization and implements interface Controller.
+ *
+ * @author Jakub Povinec
+ */
 public class RegisterController extends Serialization implements Controller {
 
     @FXML
@@ -38,10 +40,23 @@ public class RegisterController extends Serialization implements Controller {
     @FXML
     private Stage dialogStage; // dialogove okno, ktore je na obrazovke
 
+    /**
+     * Sets dialog stage.
+     *
+     * @param stage the register dialogStage
+     */
     public void setDialogStage(Stage stage) {
         this.dialogStage = stage;
     }
 
+    /**
+     * Shows error window for the specific problem that occurred while registering new user.
+     * Could be wrong username or password.
+     * Username is not accepted if there already is an user with the same username or it contains special characters.
+     * Password is not accepted if it matches username or contains any special characters.
+     *
+     * @param error type of error that occurred while registering new user.
+     */
     private void showErrorDialog(String error) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -61,6 +76,13 @@ public class RegisterController extends Serialization implements Controller {
         this.password.clear();
     }
 
+    /**
+     * Method checks both username and password if they are correct.
+     * Username is not accepted if there already is an user with the same username or it contains special characters.
+     * Password is not accepted if it matches username or contains any special characters.
+     * If any is incorrect displays errorDialog.
+     * If everything was correct adds user to ArrayList users and serializes it.
+     */
     private void addUser() {
         String usrnm = username.getText();
         String psswrd = password.getText();
@@ -90,12 +112,19 @@ public class RegisterController extends Serialization implements Controller {
         closeDialog();
     }
 
+    /**
+     * Closes this dialogStage.
+     * After user clicked either cancel or register and everything was correct.
+     */
     // zavrie dialogove okno a vrati sa na hlavnu obrazovku
     private void closeDialog() {
         this.dialogStage.close();
         switchScene(currentScene, "LoginScreen");
     }
 
+    /**
+     * Deserializes users ArrayList, sets register and cancel buttons.
+     */
     @Override
     public void initialize() {
         try {

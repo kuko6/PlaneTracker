@@ -2,7 +2,7 @@ package controller;
 
 import controller.abstracts.Controller;
 import controller.abstracts.Serialization;
-import controller.helper.Storage;
+import helper.Storage;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +18,15 @@ import model.planes.Plane;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * MapController is used to control main view of this app the Map view.
+ * Every other controller leads back to MapController.
+ * It extends abstract class Serialization and implements interface Controller.
+ * It's used to initialize airports which are represented as Buttons and initialize planes at the start of the app.
+ * It also starts Thread AirTraffic that updates the planes and displays them on the screen.
+ *
+ * @author Jakub Povinec
+ */
 public class MapController extends Serialization implements Controller {
 
     @FXML
@@ -34,10 +43,19 @@ public class MapController extends Serialization implements Controller {
     private ArrayList<Airport> airports = new ArrayList<>();
     private ArrayList<Plane> planes = new ArrayList<>();
 
+    /**
+     * This method sets helper class storage.
+     *
+     * @param storage helper class that holds ArrayLists of classes Airport and Plane
+     */
     public void loadHelper(Storage storage) {
         this.storage = storage;
     }
 
+    /**
+     * Initialize airports.
+     * If it's the start of the app, stores them in storage otherwise loads them from storage and sets them to display AirportInfo.
+     */
     // nastavi vsetky buttony(letiska)
     private synchronized void initializeAirports() {
         int i = 0;
@@ -61,6 +79,10 @@ public class MapController extends Serialization implements Controller {
         }
     }
 
+    /**
+     * Initialize planes.
+     * If it's the start of the app, stores them in storage otherwise loads them from storage.
+     */
     private synchronized void initializePlanes() {
         // na zaciatku programu sa vytvori par lietadiel a ulozia sa do ArrayList lietadla
         if (Main.counter == 0) {
@@ -99,6 +121,11 @@ public class MapController extends Serialization implements Controller {
         }
     }
 
+    /**
+     * Shows AirportInfo view after user clicked on an airport and sets storage in AirportInfoController class.
+     *
+     * @param i index of selected airport in ArrayList airports
+     */
     // zobrazi dve tabulky s lietadlami, ktore z letiska odisli alebo do neho prichadzaju
     private void showAirportInfo(int i) {
         try {
@@ -116,6 +143,9 @@ public class MapController extends Serialization implements Controller {
         }
     }
 
+    /**
+     * Displays PlaneList view after user clicked on planes Button and sets storage in PlaneListController class.
+     */
     // zobrazi tabulku so vsetkymi lietadlami
     private void showPlaneList() {
         try {
@@ -132,8 +162,12 @@ public class MapController extends Serialization implements Controller {
         }
     }
 
-    private static void incrementCounter() { Main.counter++; }
-
+    /**
+     * Initializes airports and planes.
+     * Starts thread AirTraffic if it's the start of the program or another user logged in.
+     * Sets up planeList and logout buttons.
+     * If user clicked on logout button also serializes airports and planes and switches to LoginScreen.
+     */
     @Override
     public void initialize() {
         Platform.runLater(() -> {
@@ -147,8 +181,6 @@ public class MapController extends Serialization implements Controller {
                 airTraffic.start();
                 Main.counter = 1;
             }
-
-            incrementCounter();
         });
 
         planeList.setOnAction(e -> showPlaneList());

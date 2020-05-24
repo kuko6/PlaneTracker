@@ -2,7 +2,7 @@ package controller;
 
 import controller.abstracts.Controller;
 import controller.abstracts.PlaneInfo;
-import controller.helper.Storage;
+import helper.Storage;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,11 +16,16 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Airport;
-import model.exceptions.BlankTableException;
 import model.planes.Plane;
 
 import java.io.*;
 
+/**
+ * AirportInfoController is used to display information about the airport that user clicked on the map.
+ * Implements interfaces Controller and PlaneInfo.
+ *
+ * @author Jakub Povinec
+ */
 public class AirportInfoController implements Controller, PlaneInfo {
 
     @FXML
@@ -50,10 +55,21 @@ public class AirportInfoController implements Controller, PlaneInfo {
     private Node[] nodes;
     private Storage storage; // tu vlastne potrebujem helper len aby som ho poslal dalej do PlanInfoController
 
+    /**
+     * This method sets helper class storage.
+     *
+     * @param storage helper class that holds ArrayLists of classes Airport and Plane
+     */
     public void loadHelper(Storage storage) {
         this.storage = storage;
     }
 
+    /**
+     * Loads selected airport from MapController, that user clicked on.
+     * Also adds all the arrival planes from airport to ObservableList arrivalsList and all the departure planes from airport to ObservableList departuresList
+     *
+     * @param airport selected airport by the user
+     */
     public void loadSelectedAirport(Airport airport) {
         this.airport = airport;
 
@@ -61,6 +77,9 @@ public class AirportInfoController implements Controller, PlaneInfo {
         departuresList.addAll(airport.getDepartures());
     }
 
+    /**
+     * Displays two TableViews arrivals and departures on the screen.
+     */
     private void showTimetable() {
         // do tabulky prida vsetky lietadla, ktore ma zvolene letisko v ArrayList arrivals
         arrivals.setCellValueFactory(cellData -> cellData.getValue().getArrivalInfo());
@@ -71,6 +90,9 @@ public class AirportInfoController implements Controller, PlaneInfo {
         departuresTable.setItems(departuresList);
     }
 
+    /**
+     * Displays dialog window addDialog and switches to AddPlane.
+     */
     // zobrazi dialogove okno, v ktorom sa daju pridavat lietadla
     // toto letisko je automaticky aciatocne letisko pre nove lietadlo
     private void showAddDialog() {
@@ -94,11 +116,16 @@ public class AirportInfoController implements Controller, PlaneInfo {
         }
     }
 
+    /**
+     * Adds all nodes from this controller to array nodes.
+     * Sets add button to display add dialog, back button to switch to Map view.
+     * And displays the TableViews arrivalsTable and departuresTable.
+     */
     @Override
     public void initialize() {
         nodes = new Node[] {add, back, arrivalsTable, departuresTable};
         add.setOnAction(e -> showAddDialog());
-        back.setOnAction(e -> switchToMap(currentScene, "Map", storage));
+        back.setOnAction(e -> switchToMap(currentScene, storage));
         Platform.runLater(() -> {
             showPlaneInfo(arrivalsTable, currentScene, nodes, storage);
             showPlaneInfo(departuresTable, currentScene, nodes, storage);

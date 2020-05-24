@@ -10,12 +10,21 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+/**
+ * Serialization class is used for serialization of ArrayLists of type Airport, Plane and User.
+ *
+ * @author Jakub Povinec
+ */
 public abstract class Serialization {
 
     protected ArrayList<Airport> serializedAirports = new ArrayList<>();
     protected ArrayList<Plane> serializedPlanes = new ArrayList<>();
     protected ArrayList<User> users = new ArrayList<>();
 
+    /**
+     * Since references of Objects change during serialization. Method is used to "repair" them.
+     * It takes airports start and destination from Object Plane and puts them in ArrayList serializedAirports.
+     */
     // toto asi nie je najlepsie riesenie, ale funguje to xd
     // problem bol, ze pri serializacii a potom deserializacii sa menia referencie na objekty
     // takze napriklad, ked je start lietadla v airport1 nie je to to iste letisko ako airport1 ulozene v airports
@@ -35,6 +44,9 @@ public abstract class Serialization {
         }
     }
 
+    /**
+     * Serializes ArrayList of type Airport to airports.txt
+     */
     protected synchronized void saveAirports() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
@@ -49,6 +61,9 @@ public abstract class Serialization {
         }
     }
 
+    /**
+     * Deserializes ArrayList of type Airport from airports.txt to ArrayList serializedAirports
+     */
     protected synchronized void loadAirports() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
@@ -63,6 +78,9 @@ public abstract class Serialization {
         }
     }
 
+    /**
+     * Serializes ArrayList of type Plane to planes.txt
+     */
     protected synchronized void savePlanes() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
@@ -77,6 +95,9 @@ public abstract class Serialization {
         }
     }
 
+    /**
+     * Deserializes ArrayList of type Plane from planes.txt to ArrayList serializePlanes
+     */
     protected synchronized void loadPlanes() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
@@ -91,6 +112,11 @@ public abstract class Serialization {
         }
     }
 
+    /**
+     * Deserializes ArrayList of type User from users.txt to ArrayList users
+     *
+     * @throws NoRegisteredUsersException if users.txt is empty
+     */
     protected void loadUsers() throws NoRegisteredUsersException {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
@@ -106,6 +132,9 @@ public abstract class Serialization {
         }
     }
 
+    /**
+     * Serializes ArrayList of type User to users.txt
+     */
     protected void saveUser() {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();

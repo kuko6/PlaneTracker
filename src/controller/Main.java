@@ -9,6 +9,10 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    // pouziva sa na urcenie v akom stave aplikacie je
+    // 1 je ze pouzivatel sa prihlasil
+    // 0 je uplny zaciatok aplikacie
+    // -1 je ze pouzivatel sa odhlasil
     static int counter = 0;
 
     @Override

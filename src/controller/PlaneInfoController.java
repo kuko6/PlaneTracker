@@ -1,7 +1,7 @@
 package controller;
 
 import controller.abstracts.Controller;
-import controller.helper.Storage;
+import helper.Storage;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,6 +16,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * PlaneInfoController is used to display the PlaneInfo view.
+ * It implements interface Controller.
+ * It also starts ScheduledExecutorService that is used to update the PlaneInfo table every second.
+ *
+ * @author Jakub Povinec
+ */
 public class PlaneInfoController implements Controller {
 
     @FXML
@@ -68,10 +75,18 @@ public class PlaneInfoController implements Controller {
 
     ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
 
+    /**
+     * Sets plane that user selected as plane.
+     *
+     * @param plane plane that user selected
+     */
     public void loadSelectedPlane(Plane plane) { this.plane = plane; }
 
     public void loadHelper(Storage storage) { this.storage = storage; }
 
+    /**
+     * Starts the ScheduledExecutorService that repeats every second and loads planes from storage refreshes the table from PlaneInfo view.
+     */
     private void update() {
         exec.scheduleAtFixedRate(new Runnable() {
             @Override
@@ -83,6 +98,11 @@ public class PlaneInfoController implements Controller {
         }, 0, 1, TimeUnit.SECONDS);
     }
 
+    /**
+     * Refreshes the table in PlaneInfo view.
+     * First checks if the selected plane is still in the ArrayList planes, otherwise it has already landed.
+     * If it landed terminates ScheduledExecutorService and switches back to Map view, otherwise displays the information about the plane.
+     */
     private void refresh() {
         boolean landed = true;
         for (Plane p : planes) {
@@ -95,7 +115,7 @@ public class PlaneInfoController implements Controller {
 
         if (landed) {
             System.out.println("Plane ID: " + plane.getId() + " has landed");
-            switchToMap(currentScene, "Map", storage);
+            switchToMap(currentScene, storage);
             exec.shutdownNow();
             return;
         }
@@ -106,6 +126,9 @@ public class PlaneInfoController implements Controller {
         });
     }
 
+    /**
+     * Displays the table infoBoard.
+     */
     private void showInfoBoard() {
         manufacturer.setText(plane.getManufacturer());
         type.setText(plane.getType());
@@ -121,10 +144,14 @@ public class PlaneInfoController implements Controller {
         speed.setText(plane.getSpeed() + " kts");
     }
 
+    /**
+     * Sets up back button to terminate ScheduledExecutorService and switch to Map view.
+     * Calls the update method.
+     */
     @Override
     public void initialize() {
         back.setOnAction(e -> {
-            switchToMap(currentScene, "Map", storage);
+            switchToMap(currentScene, storage);
             exec.shutdownNow();
         });
 
