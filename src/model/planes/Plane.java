@@ -5,10 +5,20 @@ import javafx.beans.property.StringProperty;
 import model.Airport;
 import model.FlightPath;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+/**
+ * Abstract class Plane is serialized in class Serialization so it has to implement Serializable.
+ * It has some attributes that are final like averageSpeed, cruisingSpeed, maxAltitude, that are used to simulate flight.
+ * This simulation is done in class AirTraffic where the Plane method fly() is called every second where its speed and altitude is updated and its start airport is contacted.
+ * Its altitude grow by rateOfClimb and its speed grow by acceleration.
+ * Every class that extends class Plane has different final attributes.
+ * Every Plane has start airport and destination airport, those are used to calculate heading which the plane should go and distance that it has to travel.
+ * Distance and heading are both calculated in different class flightPath.
+ * Every Plane has exactly one flightPath.
+ *
+ * @author Jakub Povinec
+ */
 public abstract class Plane implements Serializable {
 
     protected String type;
@@ -35,14 +45,17 @@ public abstract class Plane implements Serializable {
 
     protected boolean flying;
 
+    /**
+     * Constructor.
+     *
+     * @param type type of the plane
+     * @param airline airline of the plane
+     * @param id id of the plane
+     */
     public Plane(String type, String airline, String id) {
         this.type = type;
         this.airline = airline;
         this.id = id;
-    }
-
-    private synchronized void writeObject(ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
     }
 
     public String getType() {
@@ -89,6 +102,11 @@ public abstract class Plane implements Serializable {
 
     public Airport getStart() { return start; }
 
+    /**
+     * Sets start airport as start from arguments also adds this plane to the departures list to airport start.
+     *
+     * @param start start airport
+     */
     public void setStart(Airport start) {
         this.start = start;
         start.addDeparture(this);
@@ -96,6 +114,11 @@ public abstract class Plane implements Serializable {
 
     public Airport getDestination() { return destination; }
 
+    /**
+     * Sets destination airport as destination from arguments also adds this plane to the arrivals list to airport destination.
+     *
+     * @param destination start airport
+     */
     public void setDestination(Airport destination) {
         this.destination = destination;
         destination.addArrival(this);
@@ -113,8 +136,16 @@ public abstract class Plane implements Serializable {
 
     public void setTimeOfDescend() { timeOfDescend = flightPath.getLength() - flightPath.getTravelled(); }
 
+    /**
+     * Contacts its start airport with updated position, speed and altitude.
+     */
     public void contactAirport() { start.updatePlane(this); }
 
+    /**
+     * This method is used to simulate flight of the plane.
+     * It updates this planes position in flightPath and adds speed or altitude.
+     * It also contacts its start airport.
+     */
     public void fly() {
         flightPath.updatePosition(speed/speedConst);
         speed += acceleration;
@@ -122,12 +153,18 @@ public abstract class Plane implements Serializable {
         contactAirport();
     }
 
+    /**
+     * Creates new FlightPath and sets its state to flying.
+     */
     public void takeoff() {
         System.out.println("Plane id: " + this.id + " took off from " + this.start.getName());
         flightPath = new FlightPath(start.getLocation(), destination.getLocation(), averageSpeed);
         flying = true;
     }
 
+    /**
+     * Deletes its flightPath, changes state to not flying and removes itself from destination arrivals list and start departures list.
+     */
     public void land() {
         System.out.println("Plane id: " + this.id + " is landing in " + this.destination.getName());
         flightPath = null;
@@ -140,16 +177,27 @@ public abstract class Plane implements Serializable {
 
     public void setAcceleration(int acceleration) { this.acceleration = acceleration; }
 
+    /**
+     * Sets its acceleration and rateOfClimb to max values.
+     * In Plane it's 0.
+     */
     public void ascend() {
         this.acceleration = 0; // zrychlenie pri stupani
         this.rateOfClimb = 0; // velkost stupania
     }
 
+    /**
+     * Sets its acceleration and rateOfClimb to 0.
+     */
     public void cruise() {
         this.acceleration = 0;
         this.rateOfClimb = 0;
     }
 
+    /**
+     * Sets its acceleration and rateOfClimb to descend values.
+     * In Plane it's 0.
+     */
     public void descend() {
         this.acceleration = 0; // zrychlenie pri klesani
         this.rateOfClimb = 0; // velkost klesania

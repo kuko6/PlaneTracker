@@ -4,12 +4,15 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import model.planes.Plane;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Model class Airport is serialized in abstract class Serialization so it has to implement Serializable.
+ * It's attributes are name, coordinates, ArrayLists of type plane arrivals and departure.
+ *
+ * @author Jakub Povinec
+ */
 public class Airport implements Serializable {
 
     private String name;
@@ -19,20 +22,16 @@ public class Airport implements Serializable {
     private ArrayList<Plane> arrivals = new ArrayList<>();
     private ArrayList<Plane> departures = new ArrayList<>();
 
+    /**
+     * Constructor.
+     *
+     * @param name name of the airport
+     * @param location coordinates of the airport
+     */
     public Airport(String name, double[] location) {
         this.name = name;
         this.location = location;
     }
-
-    private synchronized void writeObject(ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-    }
-
-    /*
-    private synchronized void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-    }
-     */
 
     public String getName() {
         return name;
@@ -76,22 +75,25 @@ public class Airport implements Serializable {
         return departures;
     }
 
+    /**
+     * Method that controls the plane.
+     * It checks for plane's altitude and speed compares them to the final attributes of the plane (maxAltitude, cruisingSpeed, timeOfDescend) that every child of Plane has different.
+     * And by that comparison commands plane what it should do (descend, cruise, land).
+     *
+     * @param plane plane that called updatePlane method.
+     */
     public void updatePlane(Plane plane) {
-        //System.out.println(plane.getMaxAltitude() + " " + plane.getCruisingSpeed());
-
        if (plane.getFlightPath().getTravelled() >= plane.getTimeOfDescend()) {
             plane.descend();
         } else if (plane.getAltitude() >= plane.getMaxAltitude() || plane.getSpeed() >= plane.getCruisingSpeed() || plane.getFlightPath().getCompleted() == 50) {
-           if (plane.getAcceleration() > 0) {
+           if (plane.getAcceleration() > 0) { // za rovnaky cas aky stupal bude aj klesat
                plane.setTimeOfDescend();
-               //System.out.println(plane.getFlightPath().getTravelled());
            }
             plane.cruise();
         }
 
-        if (plane.getFlightPath().getCompleted() >= 100 || plane.getSpeed() < 0) {
+        if (plane.getFlightPath().getCompleted() >= 100 || plane.getSpeed() < 0) { // to znamena, ze uz presiel letisko
             plane.land();
         }
-        //System.out.println(this.departures.contains(plane));
     }
 }

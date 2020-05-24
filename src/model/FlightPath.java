@@ -4,6 +4,13 @@ import java.io.Serializable;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Model class FlightPath is used to keep track of the position of the plane.
+ * It calculates distance between start airport and destination airport, calculates how much of the distance has the plane already travelled.
+ * It calculates the time the plane needs to get to destination, heading it should go.
+ *
+ * @author Jakub Povinec
+ */
 public class FlightPath implements Serializable {
     private double x;
     private double y;
@@ -23,6 +30,13 @@ public class FlightPath implements Serializable {
     private String startTime;
     private String arrivalTime;
 
+    /**
+     * Constructor.
+     * Sets x and y of the start and destination and also calculates the distance between start and destination.
+     *
+     * @param start start airport
+     * @param destination destination airport
+     */
     public FlightPath(double[] start, double[] destination) {
         this.x = start[0];
         this.y = start[1];
@@ -34,6 +48,15 @@ public class FlightPath implements Serializable {
         this.length = Math.hypot(destination[0] - start[0], destination[1] - start[1]);
     }
 
+    /**
+     * Constructor.
+     * Sets x and y of the start and destination and also calculates the distance between start and destination.
+     * Calculates heading, arrival time of the plane to the destination.
+     *
+     * @param start start airport
+     * @param destination destination airport
+     * @param averageSpeed average speed of the plane, final attribute
+     */
     public FlightPath(double[] start, double[] destination, double averageSpeed) {
         this.x = start[0];
         this.y = start[1];
@@ -57,25 +80,30 @@ public class FlightPath implements Serializable {
         //this.arrivalTime = LocalTime.now().plusSeconds(time).format(timeFormat); // irl cas
     }
 
+    /**
+     * Calculates the heading from the angle between start airport and destination airport.
+     *
+     * @param startX x of the start airport
+     * @param destinationX x of the destination airport
+     * @param lenght distance between start airport and destination
+     * @return angle in radians between airport start and destination
+     */
     private double setHeading(double startX, double destinationX, double lenght) {
         double tmp;
-        if (startX < destinationX) {
+        if (startX < destinationX) { // ked ide doprava
             tmp = (destinationX - startX);
             headingX = 1;
-        } else {
+        } else { // ked ide dolava
             tmp = (startX - destinationX);
             headingX = -1;
         }
-        if (startY < destinationY) {
+        if (startY < destinationY) { // ked ide dole
             headingY = 1;
-        } else {
+        } else { // ked ide hore
             headingY = -1;
         }
 
         double angle = Math.acos(tmp/lenght);
-        if (angle < 0) {
-            angle += 360;
-        }
         return angle;
     }
 
@@ -105,12 +133,22 @@ public class FlightPath implements Serializable {
 
     public double getTravelled() { return travelled; }
 
+    /**
+     * Calculates how much percent is completed from lenght.
+     *
+     * @return double how much percent is completed
+     */
     public double getCompleted() {
         completed = travelled/length;
         completed *= 100;
         return completed;
     }
 
+    /**
+     * Updates plane's coordinates.
+     *
+     * @param speed speed of the plane
+     */
     public void updatePosition(double speed) {
         double tmp = travelled;
         travelled += speed;
