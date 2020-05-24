@@ -13,7 +13,7 @@ public class PlaneRenderer {
 
     public void highlightCompleted(FlightPath flightPath, AnchorPane currentScene) {
         Line line = new Line(flightPath.getStartX(), flightPath.getStartY(), flightPath.getX(), flightPath.getY());
-        line.setStroke(Color.RED);
+        line.setStroke(Color.DARKBLUE);
         line.setSmooth(true);
         line.setStrokeWidth(3);
         currentScene.getChildren().add(line);
@@ -22,11 +22,12 @@ public class PlaneRenderer {
     public void drawFlightPath(FlightPath flightPath, AnchorPane currentScene) {
         Line line = new Line(flightPath.getStartX(), flightPath.getStartY(), flightPath.getDestinationX(), flightPath.getDestinationY());
         line.setOpacity(0.9);
+        line.setStroke(Color.WHITE);
         currentScene.getChildren().add(line);
     }
 
     public ImageView drawPlane(Plane plane, AnchorPane currentScene) {
-        if (plane == null) { // ked uz lietadlo pristalo
+        if (plane.getFlightPath() == null) { // ked uz lietadlo pristalo
             return null;
         }
 

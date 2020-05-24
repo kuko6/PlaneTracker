@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.User;
+import model.exceptions.NoRegisteredUsersException;
 
 import java.io.*;
 import java.nio.file.FileSystems;
@@ -97,7 +98,11 @@ public class RegisterController extends Serialization implements Controller {
 
     @Override
     public void initialize() {
-        loadUsers();
+        try {
+            loadUsers();
+        } catch (NoRegisteredUsersException e) {
+            e.printStackTrace();
+        }
         register.setOnAction(e -> addUser());
         cancel.setOnAction(e -> closeDialog());
     }

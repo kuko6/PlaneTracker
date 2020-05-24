@@ -16,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Airport;
+import model.exceptions.BlankTableException;
 import model.planes.Plane;
 
 import java.io.*;

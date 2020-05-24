@@ -16,8 +16,6 @@ public class FlightPath implements Serializable {
     private int headingX; // ak sa musim na x-ovej osi posuvat dolava bude -1 inak 1
     private int headingY; // ak sa musim na y-ovej osi posuvat hore bude -1
 
-    //private double averageSpeed;
-
     private double length;
     private double travelled;
     private double completed;
@@ -32,7 +30,6 @@ public class FlightPath implements Serializable {
         this.startY = start[1];
         this.destinationX = destination[0];
         this.destinationY = destination[1];
-        //this.averageSpeed = averageSpeed;
 
         this.length = Math.hypot(destination[0] - start[0], destination[1] - start[1]);
     }

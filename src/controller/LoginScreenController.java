@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.User;
+import model.exceptions.NoRegisteredUsersException;
 
 import java.io.IOException;
 
@@ -44,7 +45,12 @@ public class LoginScreenController extends Serialization implements Controller {
     }
 
     private void authenticate() {
-        loadUsers();
+        try {
+            loadUsers();
+        } catch (NoRegisteredUsersException e) {
+            e.printStackTrace();
+        }
+
         for (User user : users) {
             if (username.getText().equals(user.getUsername())) {
                 if (password.getText().equals(user.getPassword())) {
@@ -64,13 +70,6 @@ public class LoginScreenController extends Serialization implements Controller {
         }
 
         showErrorDialog();
-
-        /*if (Objects.equals(username.getText(), "user") && (Objects.equals(password.getText(), "1234"))) {
-            this.switchScene(currentScene, "Map");
-        } else {
-            showErrorDialog();
-        }
-         */
     }
 
     private void showRegisterDialog() {
@@ -93,8 +92,14 @@ public class LoginScreenController extends Serialization implements Controller {
 
     @FXML
     public void initialize() {
-        //login.defaultButtonProperty().bind(login.focusedProperty());
-        loadUsers();
+        try {
+            loadUsers();
+        } catch (NoRegisteredUsersException e) {
+            this.password.clear();
+            this.username.clear();
+            this.showRegisterDialog();
+        }
+
         System.out.println("Registered users: ");
         for (User user : users) {
             System.out.println(user.getUsername());

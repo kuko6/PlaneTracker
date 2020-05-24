@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
+import model.exceptions.BlankTableException;
 import model.planes.Plane;
 
 import java.util.ArrayList;

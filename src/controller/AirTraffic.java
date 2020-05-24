@@ -44,7 +44,7 @@ public class AirTraffic implements Runnable, PlaneInfo {
         while (true) {
             if (Main.counter == -1) {
                 //System.out.println("koncim");
-                Platform.runLater(() -> clean());
+                Platform.runLater(this::clean);
                 Thread.currentThread().interrupt();
                 break;
             }
@@ -52,7 +52,7 @@ public class AirTraffic implements Runnable, PlaneInfo {
             airports = storage.loadAirports();
             planes = storage.loadPlanes();
             tmpPlanes = new ArrayList<Plane>(planes); // takto, lebo menim list pocas toho ako ho prechadzam
-            Platform.runLater(() -> clean());
+            Platform.runLater(this::clean);
             int i = 0;
             for (Plane plane : tmpPlanes) {
                 plane.fly();

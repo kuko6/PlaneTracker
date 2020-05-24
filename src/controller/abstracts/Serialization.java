@@ -2,6 +2,7 @@ package controller.abstracts;
 
 import model.Airport;
 import model.User;
+import model.exceptions.NoRegisteredUsersException;
 import model.planes.Plane;
 
 import java.io.*;
@@ -90,7 +91,7 @@ public abstract class Serialization {
         }
     }
 
-    protected void loadUsers() {
+    protected void loadUsers() throws NoRegisteredUsersException {
         try {
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
             String p = path.toString() + "/data/users.txt";
@@ -98,8 +99,9 @@ public abstract class Serialization {
             users = (ArrayList<User>) objectInputStream.readObject();
             objectInputStream.close();
 
+        } catch (EOFException e) {
+            throw new NoRegisteredUsersException();
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("no1 has registered yet.");
             e.printStackTrace();
         }
     }

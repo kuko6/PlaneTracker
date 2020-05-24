@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
+import model.exceptions.BlankTableException;
 import model.planes.Plane;
 import view.PlaneRenderer;
 
@@ -19,7 +20,12 @@ public interface PlaneInfo {
             if (e.getClickCount() == 2) {
                 Plane selectedPlane = table.getSelectionModel().getSelectedItem();
                 if (selectedPlane == null) { // ked je tabulka prazdna
-                    System.out.println("nothing to click on :(");
+                    try {
+                        throw new BlankTableException();
+                    } catch (BlankTableException ex) {
+                        System.out.println("Nothing to click on.");
+                    }
+
                     return;
                 }
 
