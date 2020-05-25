@@ -105,8 +105,8 @@ public class MapController extends Serialization implements Controller {
             plane3.setStart(airports.get(0));
             plane3.setDestination(airports.get(1));
 
-            plane4.setStart(airports.get(3));
-            plane4.setDestination(airports.get(6));
+            plane4.setStart(airports.get(6));
+            plane4.setDestination(airports.get(3));
 
             for (Plane p : planes) {
                 p.takeoff();
