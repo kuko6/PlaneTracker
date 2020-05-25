@@ -24,7 +24,7 @@ Vo finálnej verzií sa mi podarilo dokončiť simuláciu letu lietadla, v aplik
 
 Myslím, že tú podstatnú časť zadania, ktorú som si určil nazačiatku v zámere projektu som splnil. Jediná funkcionalita, ktorá chýba je generovanie textových súborov a rozlišovanie medzi normálnym používateľom a administrátorom. 
 
-###Hlavné kritéria
+### Hlavné kritéria
 **dedenie** sa nachádza v triedach `Airbus`, `Boeing` a `Cessna`, ktoré dedia z abstraktnej triedy `Plane`. Ďalej sa **dedenie** taktiež nachádza v triedach `LoginScreenController`, `MapController` a `RegisterController`, ktoré dedia z abstraktnej triedy `Serialization`.
 
 **agregácia** sa napríklad nachádza v triede `Airport`, kde jedno letisko môže mať lietadlá, ktoré doň smerujú alebo z neho odchádzajú. Ak by letisko zaniklo, tak nezaniknú lietadlá.
@@ -42,7 +42,7 @@ Myslím, že tú podstatnú časť zadania, ktorú som si určil nazačiatku v z
 [podtrieda Plane](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/model/planes/Airbus.java#L59-L80)
 
 
-###Vedľajšie kritéria
+### Vedľajšie kritéria
 použil som **návrhový vzor** mediator, ktorý som uplatnil pri aktualizovaní stavu lietadla. Každé lietadlo komunikuje so svojim letiskom `start`. Toto letisko im následne môže v metóde `updatePlane` zmeniť stav, či majú stúpať, klesať, pristávať alebo len tak letieť.
 [airport](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/model/Airport.java#L85),
 [plane](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/model/planes/Plane.java#L149-L154)
