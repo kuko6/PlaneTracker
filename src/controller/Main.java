@@ -4,8 +4,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.shape.Line;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+import javax.swing.*;
+import java.nio.file.Paths;
 
 public class Main extends Application {
 
@@ -18,6 +21,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../view/LoginScreen.fxml"));
+
+        String url = System.getProperty("user.dir") + "/src/content/";
+        com.apple.eawt.Application.getApplication().setDockIconImage(new ImageIcon(Paths.get(url + "icon.png").toUri().toURL()).getImage());
+        primaryStage.getIcons().add(new Image(Paths.get(url + "icon.png").toUri().toURL().toString()));
+
         primaryStage.setTitle("PlaneTracker");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
