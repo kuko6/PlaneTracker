@@ -1,81 +1,81 @@
 # PlaneTracker
-**Jakub Povinec**
+Simple plane tracker application which allows you to track simulated planes on the map and see their flight paths.
 
-## Pracovná verzia
-V tejto verzií som sa sústredil na vytvorenie grafického rozhrania, hlavne zobrazenia informácií o letiskách a lietadlách.
+## WIP version
+In this version, I focused on creating a graphical interface for displaying information about airports and airplanes.
 
-**V aplikácií sa zatiaľ dajú:**
-- zobraziť prílety a odlety zvoleného letiska
-- pridať nové lietadlo so štartom vo zvolenom letisku
-- dajú sa zobraziť všetky lietadlá
-- po dvojkliku na lietadlo v tabuľkách sa o ňom zobrazia informácie
+**At this point, the app could:**
+- display arrivals and departures of the selected airport
+- add a new plane departure from the selected airport
+- displayed all planes current planes
+- after double-clicking on the plane in the table, information about it will be displayed
 
-**agregácia** sa nachádza v triede `Airport`, kde jedno letisko môže mať lietadlá, ktoré doň smerujú alebo z neho odchádzajú. Ak by letisko zaniklo, tak nezaniknú lietadlá.
+**aggregation** is found in the `Airport` class, where a single airport can have planes going to or departing from it. If the airport were to disappear, the airplanes would not disappear.
 
-**kompozícia** sa nachádza v triede `Plane`, kde jedno lietadlo má práve jednu dráhu letu `FlightPath`, ktorá zanikne spolu s lietadlom.
+**composition** is located in the `Plane` class, where one plane has exactly one flight path `FlightPath`, which disappears with the plane.
 
-**dedenie** sa nachádza v triedach `Airbus`, `Boeing` a `Cessna`, ktoré dedia z abstraktnej triedy `Plane`. Ďalej sa **dedenie** taktiež nachádza v triedach `MapController` a `AddPlaneController`, ktoré dedia z abstraktnej triedy `Serialization`.
+**inheritance** is found in the classes `Airbus`, `Boeing` and `Cessna`, which inherit from the abstract class `Plane`. Furthermore, **inheritance** is also found in the `MapController` and `AddPlaneController` classes, which inherit from the `Serialization` abstract class.
 
-jednoduchý **polymorfizmus** sa nachádza v triede `PlaneInfoController`, kde sa zavolá metóda `plane.getManufacturer`, na ktorú rôzne podtriedy triedy `Plane` reaguju iným výpisom. Premennú `manufacturer` má každá trieda "na pevno" danú.
-
-
-## Finálna verzia
-Vo finálnej verzií sa mi podarilo dokončiť simuláciu letu lietadla, v aplikácií je na mape vidno lietadlá a po kliknutí na nich aj ich dráhu. Taktiež sa mi podarilo pridať registráciu nových používateľov a vytvoril som aj pár vlastných výnimiek. Nepodarilo sa mi ale dokončiť generovanie textového súboru. Veľa času mi zabrala práve simulácia letu lietadiel a ich vykresľovanie a keďže som už mal málo času, rozhodol som sa, že túto funkcionalitu z môjho riešenia vypustím. 
-
-Myslím, že tú podstatnú časť zadania, ktorú som si určil nazačiatku v zámere projektu som splnil. Jediná funkcionalita, ktorá chýba je generovanie textových súborov a rozlišovanie medzi normálnym používateľom a administrátorom. 
-
-### Hlavné kritéria
-**dedenie** sa nachádza v triedach `Airbus`, `Boeing` a `Cessna`, ktoré dedia z abstraktnej triedy `Plane`. Ďalej sa **dedenie** taktiež nachádza v triedach `LoginScreenController`, `MapController` a `RegisterController`, ktoré dedia z abstraktnej triedy `Serialization`.
-
-**agregácia** sa napríklad nachádza v triede `Airport`, kde jedno letisko môže mať lietadlá, ktoré doň smerujú alebo z neho odchádzajú. Ak by letisko zaniklo, tak nezaniknú lietadlá.
-[agregácia](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/model/Airport.java#L22-L23)
-
-**kompozícia** sa nachádza v triede `Plane`, kde jedno lietadlo má práve jednu dráhu letu `FlightPath`, ktorá zanikne spolu s lietadlom.
-[kompozícia](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/model/planes/Plane.java#L43)
-
-**polymorfizmus** sa nachádza v triede `PlaneInfoController`, kde sa zavolá metóda `plane.getManufacturer`, na ktorú rôzne podtriedy triedy `Plane` reaguju iným výpisom. Premennú `manufacturer` má každá trieda "na pevno" danú.
-[polymorfizmus uplatnenie](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/PlaneInfoController.java#L133) , [podtrieda Plane](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/model/planes/Airbus.java#L14)
+simple **polymorphism** is found in the `PlaneInfoController` class, where the `plane.getManufacturer` method is called, to which different subclasses of the `Plane` class respond with a different statement. Each class has a ``manufacturer'' variable.
 
 
-Ďalej sa **polymorfizmus** ešte nachádza v triede `Airport` v metóde `updatePlane`, kde sa volajú metódy `plane.ascend`, `plane.descend`, na ktoré reagujú podriedy triedy `Plane` inak.
-[polymorfizmus uplatnenie2](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/model/Airport.java#L85),
-[podtrieda Plane](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/model/planes/Airbus.java#L59-L80)
+## Final version
+In the final versions, I managed to complete the simulation of the planes (flying), in the application you can see the planes on the map and, after clicking on them, also their path. I also managed to add new user registration and created a few custom exceptions.
+
+I think that I have fulfilled the essential part of the task that I set for myself at the beginning in the purpose of the project. The only functionality that is missing is the generation of text files and the distinction between a normal user and an administrator.
+
+### Main criteria
+**inheritance** is found in the classes `Airbus`, `Boeing` and `Cessna`, which inherit from the abstract class `Plane`. Furthermore, **inheritance** is also found in the `LoginScreenController`, `MapController` and `RegisterController` classes, which inherit from the `Serialization` abstract class.
+
+For example, **aggregation** is found in the `Airport` class, where a single airport can have planes going to or departing from it. If the airport were to disappear, the airplanes would not disappear.
+[aggregation](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/model/Airport.java#L22-L23)
+
+The **composition** is located in the `Plane` class, where one plane has exactly one flight path `FlightPath`, which disappears with the plane.
+[composite](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/model/planes/Plane.java#L43)
+
+The **polymorphism** is found in the `PlaneInfoController` class, where the `plane.getManufacturer` method is called, to which different subclasses of the `Plane` class respond with different statements. Each class has a `manufacturer` variable.
+[polymorphism implementation](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/PlaneInfoController.java#L133) , [subclass Plane] (https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/model/planes/Airbus.java#L14)
 
 
-### Vedľajšie kritéria
-použil som **návrhový vzor** mediator, ktorý som uplatnil pri aktualizovaní stavu lietadla. Každé lietadlo komunikuje so svojim letiskom `start`. Toto letisko im následne môže v metóde `updatePlane` zmeniť stav, či majú stúpať, klesať, pristávať alebo len tak letieť.
+Furthermore, **polymorphism** is still found in the `Airport` class in the `updatePlane` method, where the `plane.ascend`, `plane.descend` methods are called, to which subclasses of the `Plane` class react differently.
+[polymorphism implementation2](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/model/Airport.java#L85),
+[subclass Plane](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/model/planes/Airbus.java#L59-L80)
+
+
+### Secondary criteria
+I used a **design pattern** mediator that I applied when updating the aircraft status. Each plane communicates with its `start` airport. This airport can subsequently change their status in the `updatePlane` method, whether they should climb, descend, land or just fly.
 [airport](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/model/Airport.java#L85),
 [plane](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/model/planes/Plane.java#L149-L154)
 
-**vlastné výnimky** som uplatnil pri serializácií v triede `Serialization`, kde sa keď je súbor `user.txt` prázdny vyhodí výnimka [NoRegisteredUsersException](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/abstracts/Serialization.java#L120),
-[chytanie](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/LoginScreenController.java#L118-L124).
+I used **custom exceptions** for serializations in the `Serialization` class, where when the `user.txt` file is empty, the exception [NoRegisteredUsersException](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/abstracts/Serialization.java#L120),
+[catch](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/LoginScreenController.java#L118-L124).
 
-Druhú výnimku som uplatnil v rozhraní `PlaneInfo`, kde sa keď používateľ zvolí prázdnu bunku v `TableView` vyhodí výnimka [BlankTableException](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/abstracts/PlaneInfo.java#L41-L45).
+I used the second exception in the interface `PlaneInfo`, where when the user selects an empty cell in the `TableView`, an exception [BlankTableException](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/abstracts/PlaneInfo.java#L41-L45).
 
-**multithreading** som využil v triedach [AirTraffic](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/AirTraffic.java#L22) a [PlaneInfoController](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/PlaneInfoController.java#L91).
+I used **multithreading** in the classes [AirTraffic](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/AirTraffic.java#L22) and [PlaneInfoController](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/PlaneInfoController.java#L91).
 
-**RTTI** som využil v [MapController](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/MapController.java#L64),
-ďalej v triede [AirTraffic](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/AirTraffic.java#L90) a
-v triede [PlaneRenderer](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/view/PlaneRenderer.java#L64).
+I used **RTTI** in [MapController](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/MapController.java#L64),
+further in the class [AirTraffic](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/AirTraffic.java#L90) and
+in class [PlaneRenderer](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/view/PlaneRenderer.java#L64).
 
-použitie **vzhniezdených rozhraní** v triede [AirTraffic](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/AirTraffic.java#L22),
+use of **nested interfaces** in the [AirTraffic](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/AirTraffic.java#L22),
 [AirportInfoController](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/AirportInfoController.java#L29),
-[PlaneListController](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/PlaneListController.java#L25).  
+[PlaneListController](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/PlaneListController.java#L25).
 
-použitie **lambda výrazov a referencií na metódy**, lambda výrazy som použil skoro všade, ale napríklad v triede `AirTraffic` som použil aj [lambda](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/AirTraffic.java#L88) výrazy aj [referencie](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/AirTraffic.java#L78) na metódy.
+use of **lambda expressions and method references**, I used lambda expressions almost everywhere, for example in `AirTraffic` class I also used [lambda](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/AirTraffic.java#L88) expressions and [references](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/AirTraffic.java#L78) to methods.
 
-**implicitné implementácie metód v rozhraniach** som použil v rozhraniach [Controller](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/abstracts/Controller.java#L30) a [PlaneInfo](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/abstracts/PlaneInfo.java#L36).
+I used **implicit method implementations in interfaces** in [Controller](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/abstracts/Controller.java#L30) and [PlaneInfo](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/abstracts/PlaneInfo.java#L36).
 
-**serializáciu** som použil v triedach [Serialization](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/abstracts/Serialization.java#L18) a vo všetkých triedach, ktoré ju dedia
+I used **serialization** in [Serialization](https://github.com/OOP-FIIT/oop-2020-str-18-a-valach-kuko6/blob/bcaad9892eeb80d41e1ee5e6328623cf95b32816/src/controller/abstracts/Serialization.java#L18) and in all classes that inherit it
 `LoginScreenController`, `RegisterController`, `MapController`.
 
 ## Todo
-- [x] vedieť zobraziť prílety a odlety konkrétneho letiska
-- [x] vedieť zobraziť všetky lietadlá
-- [x] vedieť zobraziť informácie o lietadle
-- [x] vedieť pridať lietadlo
-- [x] simulácia letu lietadla
-- [x] vedieť zobraziť lietadlo a jeho dráhu na mape
-- [x] registrácia nových používateľov
-- [ ] vedieť vygenerovať textový súbor s informáciami o lietadle/letisku
-- [x] ošetriť výnimnky
+- [x] be able to display the arrivals and departures of a specific airport
+- [x] be able to display all aircraft
+- [x] be able to display information about the aircraft
+- [x] be able to add an aircraft
+- [x] aircraft flight simulation
+- [x] be able to display the plane and its path on the map
+- [x] registration of new users
+- [ ] be able to generate a text file with information about the aircraft/airport
+- [x] handle exceptions
